@@ -7,22 +7,22 @@ function [ y_ss, t_p, t_a, t_s, leg_r ] = step_detail( num, den,    from, step, 
 
     % avaliar argumentos
     % ----- ----- ----- ----- ----- -----
-    if( nargin < 8 ) legendas = 1;  end;
+    if( nargin < 8 ) legendas = 0;  end;
     if( nargin < 7 ) plotar = 1;    end;
     if( nargin < 6 ) margem = 0.02; end;
-    if( nargin < 5 ) to = 10;       end;
-    if( nargin < 4 ) step = 0.01;   end;
+    if( nargin < 5 ) to = 3;        end;
+    if( nargin < 4 ) step = 0.02;   end;
     if( nargin < 3 ) from = 0;      end;
     if( nargin < 2 ) den = [1 + 2]; end;
     if( nargin < 1 ) num = 1;       end;
 
-    disp('arg.s: [num, den, from, step, to, margem, plotar, legendas]');
-    disp('return.s: [y_so.si, t_pico, t_subida, t_acomodacao]');
+    %disp('arg.s: [num, den, from, step, to, margem, plotar, legendas]');
+    %disp('return.s: [y_so.si, t_pico, t_subida, t_acomodacao]');
 
     t = from:step:to;
     u = ones(1, length(t));
 
-    sys = tf(num, den)
+    sys = num/den;
     y = lsim(sys, u, t);
     [m t1] = max(y);
 
@@ -75,7 +75,7 @@ function [ y_ss, t_p, t_a, t_s, leg_r ] = step_detail( num, den,    from, step, 
         %set(gca,'color',[0 0 0]);
         set(gcf,'color','w');
         title('resposta ao degrau unitário');
-        ylabel('saída');
+        ylabel('amplitude');
         xlabel('t(s)');
         %grid on;
         %grid minor;
