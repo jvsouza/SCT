@@ -1,0 +1,224 @@
+<!--
+    edições após publicação do matlab
+        identado com htmlformatter.com
+        adicionado metas 
+        separado css
+-->
+
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!--
+         This HTML was auto-generated from MATLAB code.
+         To make changes, update the MATLAB code and republish this document.
+               -->
+    <title>Q2: Raízes e polos</title>
+    <meta name="generator" content="MATLAB 8.3">
+    <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+    <meta name="DC.date" content="2018-09-30">
+    <meta name="DC.source" content="q2_raizes_e_polos.m">
+    <meta name="author" content="Jonas Vieira de Souza" />
+    <meta name="robots" content="index, follow" />
+    <meta name="revised" content="11/09/2018" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="reply-to" content="jonas.vieira.de.souza@gmail.com" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="icon" type="image/png" href="logo_ifsc.png" />
+
+</head>
+
+<body>
+    <div class="content">
+        <h1>sobre</h1>
+        <!--introduction-->
+        <div>
+            <ul>
+                <li>Autor: Jonas Vieira de Souza</li>
+                <li>Data: 30/09/2018</li>
+                <li>Objetivo: Avaliar estabilidade de sistemas</li>
+            </ul>
+        </div>
+        <!--/introduction-->
+        <h2>Contents</h2>
+        <div>
+            <ul>
+                <li><a href="#1">configura&ccedil;&otilde;es iniciais</a></li>
+                <li><a href="#2">verificar ra&iacute;zes e polos</a></li>
+            </ul>
+        </div>
+        <h2>configura&ccedil;&otilde;es iniciais<a name="1"></a></h2>
+        <p>limpar figuras, vari&aacute;veis e console</p><pre class="codeinput">close <span class="string">all</span>;
+clear;
+clc;
+</pre>
+        <h2>verificar ra&iacute;zes e polos<a name="2"></a></h2>
+        <div>
+            <ul>
+                <li>varia o ganho K</li>
+                <li>fecha a malha entre G1(s) e G2(s)</li>
+                <li>tabula as ra&iacute;zes</li>
+                <li>compara os polos no plano s</li>
+            </ul>
+        </div><pre class="codeinput">s = tf(<span class="string">'s'</span>);
+den1 = (s^3 + 2*s^2 + 4*s);
+G1 = 1/den1;
+G2 = 1;
+
+<span class="comment">% vetor de ganho k</span>
+k_start = 1;
+k_step  = 1;
+k_last  = 20;
+k_size  = ((k_last-k_start)/k_step) + 1;
+k_array = k_start:k_step:k_last;
+
+<span class="comment">% tabela de armazenamento das ra&iacute;zes</span>
+table_raizes =  cell2table(     <span class="keyword">...</span>
+                    cell(k_size,4), <span class="keyword">...</span>
+                    <span class="string">'VariableNames'</span>, {<span class="string">'k'</span>, <span class="string">'raiz_real'</span>, <span class="string">'raiz_compl_SPS'</span>, <span class="string">'raiz_compl_SPI'</span>} <span class="keyword">...</span>
+                );
+
+fprintf(<span class="string">'processando'</span>);
+<span class="keyword">for</span> i = 1:(k_size)
+    fprintf(<span class="string">'.'</span>);
+    G1 = k_array(i)/den1;
+    sys = feedback(G1,G2);
+    [nums,dens] = tfdata(sys,<span class="string">'v'</span>);
+
+    <span class="comment">% ra&iacute;zes da equa&ccedil;&atilde;o caracter&iacute;stica</span>
+    raizes_ec = roots(dens);
+    table_raizes.k{i} =  k_array(i);
+
+    <span class="comment">% ajustar ordem dos resultados</span>
+    <span class="keyword">if</span> imag( raizes_ec(3,1) ) == 0
+        table_raizes.raiz_real{i} = raizes_ec(3,1);
+        table_raizes.raiz_compl_SPS{i} = raizes_ec(1,1);
+        table_raizes.raiz_compl_SPI{i} = raizes_ec(2,1);
+    <span class="keyword">else</span>
+        table_raizes.raiz_real{i} = raizes_ec(1,1);
+        table_raizes.raiz_compl_SPS{i} = raizes_ec(2,1);
+        table_raizes.raiz_compl_SPI{i} = raizes_ec(3,1);
+    <span class="keyword">end</span>
+
+    <span class="comment">% agregar polos no plano S</span>
+    rlocusplot(sys);
+    hold <span class="string">on</span>;
+<span class="keyword">end</span>
+
+<span class="comment">% zoom na regi&atilde;o de an&aacute;lise no gr&aacute;fico</span>
+axis([-4 2 -4  4]);
+grid <span class="string">on</span>;
+
+<span class="comment">% apresentar ra&iacute;zes das equa&ccedil;&otilde;es caracter&iacute;sticas</span>
+table_raizes(1:k_size,:)
+</pre><pre class="codeoutput">processando....................
+ans = 
+
+     k      raiz_real      raiz_compl_SPS         raiz_compl_SPI   
+    ____    _________    ___________________    ___________________
+
+    [ 1]    [-0.2848]    [-0.8576 + 1.6661i]    [-0.8576 - 1.6661i]
+    [ 2]    [-0.6389]    [-0.6806 + 1.6332i]    [-0.6806 - 1.6332i]
+    [ 3]    [     -1]    [-0.5000 + 1.6583i]    [-0.5000 - 1.6583i]
+    [ 4]    [-1.2956]    [-0.3522 + 1.7214i]    [-0.3522 - 1.7214i]
+    [ 5]    [-1.5260]    [-0.2370 + 1.7946i]    [-0.2370 - 1.7946i]
+    [ 6]    [-1.7113]    [-0.1443 + 1.8669i]    [-0.1443 - 1.8669i]
+    [ 7]    [-1.8664]    [-0.0668 + 1.9355i]    [-0.0668 - 1.9355i]
+    [ 8]    [-2.0000]    [-0.0000 + 2.0000i]    [-0.0000 - 2.0000i]
+    [ 9]    [-2.1179]    [ 0.0589 + 2.0606i]    [ 0.0589 - 2.0606i]
+    [10]    [-2.2236]    [ 0.1118 + 2.1177i]    [ 0.1118 - 2.1177i]
+    [11]    [-2.3198]    [ 0.1599 + 2.1717i]    [ 0.1599 - 2.1717i]
+    [12]    [-2.4082]    [ 0.2041 + 2.2229i]    [ 0.2041 - 2.2229i]
+    [13]    [-2.4902]    [ 0.2451 + 2.2717i]    [ 0.2451 - 2.2717i]
+    [14]    [-2.5667]    [ 0.2833 + 2.3182i]    [ 0.2833 - 2.3182i]
+    [15]    [-2.6386]    [ 0.3193 + 2.3628i]    [ 0.3193 - 2.3628i]
+    [16]    [-2.7064]    [ 0.3532 + 2.4056i]    [ 0.3532 - 2.4056i]
+    [17]    [-2.7707]    [ 0.3854 + 2.4468i]    [ 0.3854 - 2.4468i]
+    [18]    [-2.8320]    [ 0.4160 + 2.4866i]    [ 0.4160 - 2.4866i]
+    [19]    [-2.8904]    [ 0.4452 + 2.5249i]    [ 0.4452 - 2.5249i]
+    [20]    [-2.9463]    [ 0.4732 + 2.5621i]    [ 0.4732 - 2.5621i]
+
+</pre><img vspace="5" hspace="5" src="q2_raizes_e_polos_01.png" width="70%" alt="">
+        <p class="footer">
+            <br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a>
+            <br>
+        </p>
+    </div>
+    <!--
+##### SOURCE BEGIN #####
+%% sobre
+%
+% * Autor: Jonas Vieira de Souza
+% * Data: 30/09/2018
+% * Objetivo: Avaliar estabilidade de sistemas
+%
+
+%% configurações iniciais
+% limpar figuras, variáveis e console
+close all;
+clear;
+clc;
+
+%% verificar raízes e polos
+% * varia o ganho K
+% * fecha a malha entre G1(s) e G2(s)
+% * tabula as raízes
+% * compara os polos no plano s
+s = tf('s');
+den1 = (s^3 + 2*s^2 + 4*s);
+G1 = 1/den1;
+G2 = 1;
+
+% vetor de ganho k
+k_start = 1;
+k_step  = 1;
+k_last  = 20;
+k_size  = ((k_last-k_start)/k_step) + 1;
+k_array = k_start:k_step:k_last;
+
+% tabela de armazenamento das raízes
+table_raizes =  cell2table(     ...
+                    cell(k_size,4), ...
+                    'VariableNames', {'k', 'raiz_real', 'raiz_compl_SPS', 'raiz_compl_SPI'} ...
+                );
+
+fprintf('processando');        
+for i = 1:(k_size)
+    fprintf('.');
+    G1 = k_array(i)/den1;
+    sys = feedback(G1,G2);
+    [nums,dens] = tfdata(sys,'v');
+
+    % raízes da equação característica
+    raizes_ec = roots(dens);    
+    table_raizes.k{i} =  k_array(i);
+
+    % ajustar ordem dos resultados
+    if imag( raizes_ec(3,1) ) == 0
+        table_raizes.raiz_real{i} = raizes_ec(3,1);
+        table_raizes.raiz_compl_SPS{i} = raizes_ec(1,1);    
+        table_raizes.raiz_compl_SPI{i} = raizes_ec(2,1);
+    else
+        table_raizes.raiz_real{i} = raizes_ec(1,1);
+        table_raizes.raiz_compl_SPS{i} = raizes_ec(2,1);
+        table_raizes.raiz_compl_SPI{i} = raizes_ec(3,1);
+    end
+
+    % agregar polos no plano S
+    rlocusplot(sys);
+    hold on;    
+end
+
+% zoom na região de análise no gráfico
+axis([-4 2 -4  4]);
+grid on;
+
+% apresentar raízes das equações características
+table_raizes(1:k_size,:)
+##### SOURCE END #####
+-->
+</body>
+
+</html>

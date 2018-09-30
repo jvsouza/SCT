@@ -1,0 +1,109 @@
+<!--
+	edições após publicação do matlab
+		identado com htmlformatter.com
+		adicionado metas 
+		separado css
+-->
+
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!--
+         This HTML was auto-generated from MATLAB code.
+         To make changes, update the MATLAB code and republish this document.
+               -->
+    <title>Q1: Estabilidade e polos</title>
+    <meta name="generator" content="MATLAB 8.3">
+    <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+    <meta name="DC.date" content="2018-09-30">
+    <meta name="DC.source" content="q1_estabilidade_e_polos.m">
+    <meta name="author" content="Jonas Vieira de Souza" />
+    <meta name="robots" content="index, follow" />
+    <meta name="revised" content="11/09/2018" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="reply-to" content="jonas.vieira.de.souza@gmail.com" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="icon" type="image/png" href="logo_ifsc.png" />
+
+</head>
+
+<body>
+    <div class="content">
+        <h1>sobre</h1>
+        <!--introduction-->
+        <div>
+            <ul>
+                <li>Autor: Jonas Vieira de Souza</li>
+                <li>Data: 30/09/2018</li>
+                <li>Objetivo: Avaliar estabilidade de sistemas</li>
+            </ul>
+        </div>
+        <!--/introduction-->
+        <h2>Contents</h2>
+        <div>
+            <ul>
+                <li><a href="#1">configura&ccedil;&otilde;es iniciais</a></li>
+                <li><a href="#2">verificar estabilidade e polos</a></li>
+            </ul>
+        </div>
+        <h2>configura&ccedil;&otilde;es iniciais<a name="1"></a></h2>
+        <p>limpar figuras, vari&aacute;veis e console</p>
+        <pre class="codeinput">close <span class="string">all</span>;
+clear;
+clc;
+</pre>
+        <h2>verificar estabilidade e polos<a name="2"></a></h2>
+        <div>
+            <ul>
+                <li>fecha a malha entre G1(s) e G2(s)</li>
+                <li>localiza os polos no plano s</li>
+            </ul>
+        </div>
+        <pre class="codeinput">s = tf(<span class="string">'s'</span>);
+G1 = 1/(s^3 + s^2 + 2*s + 23);	<span class="comment">% G1(s)</span>
+G2 = 1;                         <span class="comment">% G2(s)</span>
+
+sys = feedback(G1,G2);			<span class="comment">% FTMF</span>
+rlocus(sys.num, sys.den);		<span class="comment">% Lugar das ra&iacute;zes</span>
+	axis([-4 2 -4  4]);
+	grid <span class="string">on</span>;
+</pre>
+        <img vspace="5" hspace="5" src="q1_estabilidade_e_polos_01.png" width="70%" alt="">
+        <p class="footer">
+            <br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a>
+            <br>
+        </p>
+    </div>
+    <!--
+         ##### SOURCE BEGIN #####
+         %% sobre
+         %
+         % * Autor: Jonas Vieira de Souza
+         % * Data: 30/09/2018
+         % * Objetivo: Avaliar estabilidade de sistemas
+         %
+
+         %% configurações iniciais
+         % limpar figuras, variáveis e console
+         close all;
+         clear;
+         clc;
+
+         %% verificar estabilidade e polos
+         % * fecha a malha entre G1(s) e G2(s)
+         % * localiza os polos no plano s
+         s = tf('s');
+         G1 = 1/(s^3 + s^2 + 2*s + 23);	% G1(s)
+         G2 = 1;                         % G2(s)
+
+         sys = feedback(G1,G2);			% FTMF
+         rlocus(sys.num, sys.den);		% Lugar das raízes
+         	axis([-4 2 -4  4]);
+         	grid on;
+         ##### SOURCE END #####
+         -->
+</body>
+</html>

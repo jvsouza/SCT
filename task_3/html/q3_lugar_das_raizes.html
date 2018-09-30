@@ -1,0 +1,142 @@
+<!--
+    edições após publicação do matlab
+        identado com htmlformatter.com
+        adicionado metas 
+        separado css
+-->
+
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!--
+         This HTML was auto-generated from MATLAB code.
+         To make changes, update the MATLAB code and republish this document.
+               -->
+    <title>Q3: Lugar das raízes</title>
+    <meta name="generator" content="MATLAB 8.3">
+    <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+    <meta name="DC.date" content="2018-09-30">
+    <meta name="DC.source" content="q3_lugar_das_raizes.m">
+    <meta name="author" content="Jonas Vieira de Souza" />
+    <meta name="robots" content="index, follow" />
+    <meta name="revised" content="11/09/2018" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="reply-to" content="jonas.vieira.de.souza@gmail.com" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="icon" type="image/png" href="logo_ifsc.png" />
+
+</head>
+
+<body>
+    <div class="content">
+        <h1>sobre</h1>
+        <!--introduction-->
+        <div>
+            <ul>
+                <li>Autor: Jonas Vieira de Souza</li>
+                <li>Data: 30/09/2018</li>
+                <li>Objetivo: Avaliar estabilidade de sistemas</li>
+            </ul>
+        </div>
+        <!--/introduction-->
+        <h2>Contents</h2>
+        <div>
+            <ul>
+                <li><a href="#1">configura&ccedil;&otilde;es iniciais</a></li>
+                <li><a href="#2">verificar lugar da ra&iacute;zes</a></li>
+            </ul>
+        </div>
+        <h2>configura&ccedil;&otilde;es iniciais<a name="1"></a></h2>
+        <p>...</p><pre class="codeinput">close <span class="string">all</span>;
+clear;
+clc;
+</pre>
+        <h2>verificar lugar da ra&iacute;zes<a name="2"></a></h2>
+        <div>
+            <ul>
+                <li>fecha a malha entre G1(s) e G2(s)</li>
+                <li>mostra a equa&ccedil;&atilde;o caracter&iacute;stica da FTMF</li>
+                <li>plota o lugar das ra&iacute;zes</li>
+            </ul>
+        </div><pre class="codeinput">s = tf(<span class="string">'s'</span>);
+
+K = 1;                      <span class="comment">% Ganho K</span>
+G1 = (K*(s+1)) / (s*(s+2)); <span class="comment">% G1(s)</span>
+G2 = 1 / (s+3);             <span class="comment">% G2(s)</span>
+
+<span class="comment">% fun&ccedil;&atilde;o transfer&ecirc;ncia de malha fechada</span>
+FTMF = feedback(G1,G2)
+[nums, dens] = tfdata(FTMF,<span class="string">'v'</span>);
+
+<span class="comment">% equa&ccedil;&atilde;o caracter&iacute;stica</span>
+EC_FTMF = tf(dens,1)
+
+<span class="comment">% lugar das ra&iacute;zes</span>
+rlocus(FTMF.num,FTMF.den);
+axis([-5 1 -1  1]);
+grid <span class="string">on</span>;
+</pre><pre class="codeoutput">
+FTMF =
+
+      s^2 + 4 s + 3
+  ---------------------
+  s^3 + 5 s^2 + 7 s + 1
+
+Continuous-time transfer function.
+
+EC_FTMF =
+
+  s^3 + 5 s^2 + 7 s + 1
+
+Continuous-time transfer function.
+
+</pre><img vspace="5" hspace="5" src="q3_lugar_das_raizes_01.png" width="70%" alt="">
+        <p class="footer">
+            <br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a>
+            <br>
+        </p>
+    </div>
+    <!--
+##### SOURCE BEGIN #####
+%% sobre
+%
+% * Autor: Jonas Vieira de Souza
+% * Data: 30/09/2018
+% * Objetivo: Avaliar estabilidade de sistemas
+%
+
+%% configurações iniciais
+% ... 
+close all;
+clear;
+clc;
+
+%% verificar lugar da raízes
+% * fecha a malha entre G1(s) e G2(s)
+% * mostra a equação característica da FTMF
+% * plota o lugar das raízes
+s = tf('s');
+
+K = 1;                      % Ganho K
+G1 = (K*(s+1)) / (s*(s+2)); % G1(s)
+G2 = 1 / (s+3);             % G2(s)
+
+% função transferência de malha fechada
+FTMF = feedback(G1,G2)
+[nums, dens] = tfdata(FTMF,'v');
+
+% equação característica
+EC_FTMF = tf(dens,1)
+
+% lugar das raízes
+rlocus(FTMF.num,FTMF.den);
+axis([-5 1 -1  1]);
+grid on;
+##### SOURCE END #####
+-->
+</body>
+
+</html>
