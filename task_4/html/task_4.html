@@ -1,0 +1,245 @@
+<!--
+  edições após publicação do matlab
+    identado com htmlformatter.com
+    adicionado metas 
+    separado css
+-->
+
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!--
+         This HTML was auto-generated from MATLAB code.
+         To make changes, update the MATLAB code and republish this document.
+               -->
+    <title>Task 4</title>
+    <meta name="generator" content="MATLAB 8.3">
+    <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+    <meta name="DC.date" content="2018-09-30">
+    <meta name="DC.source" content="task_4.m">
+    <meta name="author" content="Jonas Vieira de Souza" />
+    <meta name="robots" content="index, follow" />
+    <meta name="revised" content="11/09/2018" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="reply-to" content="jonas.vieira.de.souza@gmail.com" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="icon" type="image/png" href="logo_ifsc.png" />
+</head>
+
+
+<body>
+    <div class="content">
+        <h1>sobre</h1>
+        <!--introduction-->
+        <div>
+            <ul>
+                <li>Autor: Jonas Vieira de Souza</li>
+                <li>Data: 27/09/2018</li>
+                <li>Objetivo: Avaliar os lugares das ra&iacute;zes</li>
+            </ul>
+        </div>
+        <!--/introduction-->
+        <h2>Contents</h2>
+        <div>
+            <ul>
+                <li><a href="#1">configura&ccedil;&otilde;es iniciais</a></li>
+                <li><a href="#2">sistema realimentado 1</a></li>
+                <li><a href="#3">sistema realimentado 2</a></li>
+            </ul>
+        </div>
+        <h2>configura&ccedil;&otilde;es iniciais<a name="1"></a></h2>
+        <p>limpar figuras, vari&aacute;veis e console</p><pre class="codeinput">close <span class="string">all</span>;
+clear;
+clc;
+</pre>
+        <h2>sistema realimentado, caso 1<a name="2"></a></h2>
+        <div>
+            <ul>
+                <li>ra&iacute;zes da FTMA: polos e zeros</li>
+                <li>LR da FTMF</li>
+            </ul>
+        </div><pre class="codeinput">s = tf(<span class="string">'s'</span>);
+G1 = (s + 3)/((s)*(s + 1)*(s^2 + 4*s + 16));
+G2 = 1;
+
+<span class="comment">% FTMF</span>
+FTMF = feedback(G1,G2)
+
+<span class="comment">% ra&iacute;zes da FTMA: polos e zeros</span>
+G1_polos = pole(G1)
+G1_zeros = zero(G1)
+
+<span class="comment">% LR da FTMF</span>
+figure(1);
+c0 = rlocusplot(FTMF);
+c0.AxesGrid.Title = <span class="string">'LR de G1(s) em MF'</span>;
+axis([-5 1 -4  4]);
+grid <span class="string">on</span>;
+</pre><pre class="codeoutput">
+FTMF =
+
+               s + 3
+  -------------------------------
+  s^4 + 5 s^3 + 20 s^2 + 17 s + 3
+
+Continuous-time transfer function.
+
+G1_polos =
+
+   0.0000 + 0.0000i
+  -2.0000 + 3.4641i
+  -2.0000 - 3.4641i
+  -1.0000 + 0.0000i
+
+G1_zeros =
+
+    -3
+
+</pre><img vspace="5" hspace="5" src="task_4_01.png" alt="">
+        <h2>sistema realimentado, caso 2<a name="3"></a></h2>
+        <div>
+            <ul>
+                <li>determinar os p&oacute;los da FTMA</li>
+                <li>plotar o LR da FTMA</li>
+                <li>verificar contato dos ramos</li>
+                <li>determinar margem de ganho</li>
+            </ul>
+        </div><pre class="codeinput">s = tf(<span class="string">'s'</span>);
+FTMA = (1)/ ( (s) * (s + 0.5) * (s^2 + 0.6*s + 10) );
+
+<span class="comment">% determinar os p&oacute;los da FTMA</span>
+G2_polo = pole(FTMA)
+
+<span class="comment">% plotar o LR de FTMA</span>
+figure(2);
+subplot(1,3,1);
+c1 = rlocusplot(FTMA);
+c1.AxesGrid.Title = <span class="string">'LR sem zoom'</span>;
+axis([-6 6 -6  6]);
+grid <span class="string">on</span>;
+
+<span class="comment">% plotar LR com retas (z) e semi-circulos (wn) definidas</span>
+subplot(1,3,2);
+c3 = rlocusplot(FTMA);
+c3.AxesGrid.Title = <span class="string">'LR com retas (z) e semi-circulos (wn) definidos'</span>;
+array_z  = [ 0.05, 0.1, 0.15, 0.2, 0.5, 0.55, 0.6, 0.65 ];
+array_wn = [ 0.5,    2.1,2.15,     2.35,2.4,2.45,     3.1, 3.15, 3.2];
+sgrid( array_z, array_wn );
+axis([-3 1 -4  4]);
+grid <span class="string">on</span>;
+
+<span class="comment">% verificar contato dos ramos</span>
+subplot(1,3,3);
+c2 = rlocusplot(FTMA);
+c2.AxesGrid.Title = <span class="string">'LR com zoom no ramos pr&oacute;ximos'</span>;
+axis([-0.2515 -0.2475 -10^-7  10^-7]);
+grid <span class="string">on</span>;
+
+<span class="comment">% determinar margem de ganho</span>
+figure(3);
+[G2_ganho] = margin(FTMA)
+margin(FTMA);
+grid <span class="string">on</span>;
+</pre><pre class="codeoutput">
+G2_polo =
+
+   0.0000 + 0.0000i
+  -0.3000 + 3.1480i
+  -0.3000 - 3.1480i
+  -0.5000 + 0.0000i
+
+G2_ganho =
+
+   26.1569
+
+</pre><img vspace="5" hspace="5" src="task_4_02.png" alt=""> <img vspace="5" hspace="5" src="task_4_03.png" alt="">
+        <p class="footer">
+            <br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a>
+            <br>
+        </p>
+    </div>
+    <!--
+##### SOURCE BEGIN #####
+%% sobre
+%
+% * Autor: Jonas Vieira de Souza
+% * Data: 27/09/2018
+% * Objetivo: Avaliar os lugares das raízes
+%
+
+%% configurações iniciais
+% limpar figuras, variáveis e console
+close all;
+clear;
+clc;
+
+%% sistema realimentado, caso 1
+% * raízes da FTMA: polos e zeros
+% * LR da FTMF
+s = tf('s');
+G1 = (s + 3)/((s)*(s + 1)*(s^2 + 4*s + 16));
+G2 = 1;
+
+% FTMF
+FTMF = feedback(G1,G2) 
+
+% raízes da FTMA: polos e zeros
+G1_polos = pole(G1)
+G1_zeros = zero(G1)
+
+% LR da FTMF
+figure(1);
+c0 = rlocusplot(FTMF);
+c0.AxesGrid.Title = 'LR de G1(s) em MF';
+axis([-5 1 -4  4]);
+grid on;
+
+%% sistema realimentado, caso 2
+% * determinar os pólos da FTMA
+% * plotar o LR da FTMA
+% * verificar contato dos ramos
+% * determinar margem de ganho
+s = tf('s');
+FTMA = (1)/ ( (s) * (s + 0.5) * (s^2 + 0.6*s + 10) );
+
+% determinar os pólos da FTMA
+G2_polo = pole(FTMA)
+
+% plotar o LR de FTMA
+figure(2);
+subplot(1,3,1);
+c1 = rlocusplot(FTMA);
+c1.AxesGrid.Title = 'LR sem zoom';
+axis([-6 6 -6  6]);
+grid on;
+
+% plotar LR com retas (z) e semi-circulos (wn) definidas
+subplot(1,3,2);
+c3 = rlocusplot(FTMA);
+c3.AxesGrid.Title = 'LR com retas (z) e semi-circulos (wn) definidos';
+array_z  = [ 0.05, 0.1, 0.15, 0.2, 0.5, 0.55, 0.6, 0.65 ];
+array_wn = [ 0.5,    2.1,2.15,     2.35,2.4,2.45,     3.1, 3.15, 3.2];
+sgrid( array_z, array_wn );
+axis([-3 1 -4  4]);
+grid on;
+
+% verificar contato dos ramos
+subplot(1,3,3);
+c2 = rlocusplot(FTMA);
+c2.AxesGrid.Title = 'LR com zoom no ramos próximos';
+axis([-0.2515 -0.2475 -10^-7  10^-7]);
+grid on;
+
+% determinar margem de ganho
+figure(3);
+[G2_ganho] = margin(FTMA)
+margin(FTMA);
+grid on;
+##### SOURCE END #####
+-->
+</body>
+
+</html>
