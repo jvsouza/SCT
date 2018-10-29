@@ -1,0 +1,108 @@
+<!--
+  edições após publicação do matlab
+    identado com htmlformatter.com
+    adicionado metas 
+    separado css
+-->
+
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!--
+         This HTML was auto-generated from MATLAB code.
+         To make changes, update the MATLAB code and republish this document.
+               -->
+    <title>Task 7</title>
+    <meta name="generator" content="MATLAB 8.3">
+    <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+    <meta name="DC.date" content="2018-09-30">
+    <meta name="DC.source" content="task_7.m">
+    <meta name="author" content="Jonas Vieira de Souza" />
+    <meta name="robots" content="index, follow" />
+    <meta name="revised" content="27/10/2018" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="reply-to" content="jonas.vieira.de.souza@gmail.com" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="icon" type="image/png" href="logo_ifsc.png" />
+</head>
+
+
+<body>
+    <div class="content">
+        <h1>sobre</h1>
+        <!--introduction-->
+        <div>
+            <ul>
+                <li>Autor: Jonas Vieira de Souza</li>
+                <li>Data: 27/10/2018</li>
+                <li>Objetivo: apresentar o diagrama de bode de um sistema</li>
+            </ul>
+        </div>
+        <!--/introduction-->
+        <h2>Contents</h2>
+        <div>
+            <ul>
+                <li><a href="#1">configura&ccedil;&otilde;es iniciais</a></li>
+                <li><a href="#2">apresentar o diagrama de bode de um sistema</a></li>
+            </ul>
+        </div>
+        <h2>configura&ccedil;&otilde;es iniciais<a name="1"></a></h2>
+        <p>limpar figuras, vari&aacute;veis e console</p><pre class="codeinput">close <span class="string">all</span>;
+clear;
+clc;
+</pre>
+        <h2>apresentar o diagrama de bode de um sistema<a name="2"></a></h2>
+        <p>...</p><pre class="codeinput">s = tf(<span class="string">'s'</span>);
+num = (100*s);
+den = ((s+1)^2*(s+10));
+H = num/den
+bode(H);
+grid <span class="string">on</span>;
+title(<span class="string">'Diagrama de bode'</span>);
+</pre><pre class="codeoutput">
+H =
+
+           100 s
+  ------------------------
+  s^3 + 12 s^2 + 21 s + 10
+
+Continuous-time transfer function.
+
+</pre><img vspace="5" hspace="5" src="task_7_01.png" alt="">
+        <p class="footer">
+            <br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a>
+            <br>
+        </p>
+    </div>
+    <!--
+##### SOURCE BEGIN #####
+%% sobre
+%
+% * Autor: Jonas Vieira de Souza
+% * Data: 27/10/2018
+% * Objetivo: apresentar o diagrama de bode de um sistema
+%
+
+%% configurações iniciais
+% limpar figuras, variáveis e console
+close all;
+clear;
+clc;
+
+%% apresentar o diagrama de bode de um sistema
+% ...
+s = tf('s');
+num = (100*s);
+den = ((s+1)^2*(s+10));
+H = num/den
+bode(H);
+grid on;
+title('Diagrama de bode');
+##### SOURCE END #####
+-->
+</body>
+
+</html>
