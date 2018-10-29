@@ -9,269 +9,269 @@
    PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <!--
-         This HTML was auto-generated from MATLAB code.
-         To make changes, update the MATLAB code and republish this document.
-               -->
-    <title>Task 5</title>
-    <meta name="generator" content="MATLAB 8.3">
-    <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-    <meta name="DC.date" content="2018-09-30">
-    <meta name="DC.source" content="task_5.m">
-    <meta name="author" content="Jonas Vieira de Souza" />
-    <meta name="robots" content="index, follow" />
-    <meta name="revised" content="02/10/2018" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="reply-to" content="jonas.vieira.de.souza@gmail.com" />
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <link rel="icon" type="image/png" href="logo_ifsc.png" />
-</head>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <!--
+             This HTML was auto-generated from MATLAB code.
+             To make changes, update the MATLAB code and republish this document.
+                   -->
+        <title>Task 5</title>
+        <meta name="generator" content="MATLAB 8.3">
+        <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+        <meta name="DC.date" content="2018-09-30">
+        <meta name="DC.source" content="task_5.m">
+        <meta name="author" content="Jonas Vieira de Souza" />
+        <meta name="robots" content="index, follow" />
+        <meta name="revised" content="02/10/2018" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="reply-to" content="jonas.vieira.de.souza@gmail.com" />
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <link rel="icon" type="image/png" href="logo_ifsc.png" />
+    </head>
 
-<body>
-    <div class="content">
-        <h1>sobre</h1>
-        <!--introduction-->
-        <div>
-            <ul>
-                <li>Autor: Jonas Vieira de Souza</li>
-                <li>Data: 02/10/2018</li>
-                <li>Objetivo: avaliar sistemas</li>
-            </ul>
+    <body>
+        <div class="content">
+            <h1>sobre</h1>
+            <!--introduction-->
+            <div>
+                <ul>
+                    <li>Autor: Jonas Vieira de Souza</li>
+                    <li>Data: 02/10/2018</li>
+                    <li>Objetivo: avaliar sistemas</li>
+                </ul>
+            </div>
+            <!--/introduction-->
+            <h2>Contents</h2>
+            <div>
+                <ul>
+                    <li><a href="#1">configura&ccedil;&otilde;es iniciais</a></li>
+                    <li><a href="#2">resposta ao degrau, desempenho e LR</a></li>
+                    <li><a href="#3">identificar a &aacute;rea do LR com crit&eacute;rio</a></li>
+                    <li><a href="#4">ganho diferentes sobre a &aacute;rea com crit&eacute;rio</a></li>
+                </ul>
+            </div>
+            <h2>configura&ccedil;&otilde;es iniciais<a name="1"></a></h2>
+            <p>limpar figuras, vari&aacute;veis e console</p><pre class="codeinput">close <span class="string">all</span>;
+    clear;
+    clc;
+    </pre>
+            <h2>resposta ao degrau, desempenho e LR<a name="2"></a></h2>
+            <div>
+                <ul>
+                    <li>resposta ao degrau</li>
+                    <li>desempenho</li>
+                    <li>LR</li>
+                </ul>
+            </div><pre class="codeinput">s = tf(<span class="string">'s'</span>);
+    G = ( (s+7) ) / ( (s+5)*(s+15)*(s+20) )
+
+    figure(1);
+    [ ~, ~, ~, ~, leg ] = step_detail( ( s + 7 ),( (s+5)*(s+15)*(s+20) ), 0, 0.01, 2, 0.1, 1, 1,  <span class="string">''</span> );
+
+    figure(2);
+    G_polos = pole(G)
+    G_zeros = zero(G)
+    rlocus(G);
+    title(<span class="string">'Lugar das ra&iacute;zes'</span>);
+    xlabel(<span class="string">'Eixo real'</span>);
+    ylabel(<span class="string">'Eixo imagin&aacute;rio'</span>);
+    grid <span class="string">on</span>;
+    </pre><pre class="codeoutput">
+    G =
+
+                 s + 7
+      ---------------------------
+      s^3 + 40 s^2 + 475 s + 1500
+
+    Continuous-time transfer function.
+
+    G_polos =
+
+      -20.0000
+      -15.0000
+       -5.0000
+
+    G_zeros =
+
+        -7
+
+    </pre><img vspace="5" hspace="5" src="task_5_01.png" alt=""> <img vspace="5" hspace="5" src="task_5_02.png" alt="">
+            <h2>identificar a &aacute;rea do LR com crit&eacute;rio<a name="3"></a></h2>
+            <div>
+                <ul>
+                    <li>OS = 5%</li>
+                    <li>ts = 1s</li>
+                    <li>k = ?</li>
+                </ul>
+            </div><pre class="codeinput">Mp = 0.05;
+    Zeta = (1) / ( sqrt( 1 + ( (pi^2) / (log(Mp)^2) ) ) )
+
+    figure(3);
+    c0 = rlocusplot(G);
+    sgrid([Zeta, 0.75, 0.85, 0.95],[15, 24.325, 30]);
+    c0.AxesGrid.Title = <span class="string">'LR com linha de amortecimento de Zeta = 0.69'</span>;
+    axis([-25 0 -50  50]);
+    xlabel(<span class="string">'Eixo real'</span>);
+    ylabel(<span class="string">'Eixo imagin&aacute;rio'</span>);
+    grid <span class="string">on</span>;
+
+    p_i = pi / ( (2/3)*0.26 )
+    p_r = (-Zeta*p_i) / sqrt(1-Zeta^2)
+    </pre><pre class="codeoutput">
+    Zeta =
+
+        0.6901
+
+    p_i =
+
+       18.1246
+
+    p_r =
+
+      -17.2831
+
+    </pre><img vspace="5" hspace="5" src="task_5_03.png" alt="">
+            <h2>ganho diferentes sobre a &aacute;rea com crit&eacute;rio<a name="4"></a></h2>
+            <div>
+                <ul>
+                    <li>obter K's e polo's</li>
+                    <li>plotar respostas ao degrau</li>
+                </ul>
+            </div><pre class="codeinput"><span class="comment">%{
+    </span><span class="comment">    atrav&eacute;s de [K, Polos] = rlocfind(G)
+    </span><span class="comment">    dado os pontos selecionados com rlocfind(G):
+    </span><span class="comment">        -16.82 +14.79i,
+    </span><span class="comment">        -16.98 +10.56i,
+    </span><span class="comment">        -17.24 +5.60i,
+    </span><span class="comment">        -18.84 -0.09i
+    </span><span class="comment">
+    </span><span class="comment">    obtido os respectivos K:
+    </span><span class="comment">        240.63
+    </span><span class="comment">        129.91
+    </span><span class="comment">        43.50
+    </span><span class="comment">        5.21
+    </span><span class="comment">
+    </span><span class="comment">    e os respecitvos Polos:
+    </span><span class="comment">        -16.82 +14.79i, -16.82 -14.79i, -6.34 + 0.00i
+    </span><span class="comment">        -16.99 +10.57i, -16.99 -10.57i, -6.01 + 0.00i
+    </span><span class="comment">        -17.26 + 5.60i, -17.26 - 5.60i, -5.47 + 0.00i
+    </span><span class="comment">        -18.83, -16.09, -5.06
+    </span><span class="comment">%}
+    </span>
+    figure(4)
+    ks = [240.6392, 129.9134, 43.5051, 5.2197]
+    <span class="keyword">for</span> i = 1:4
+        sys_cl = feedback(G*ks(i),1);
+        step(sys_cl)
+        hold <span class="string">on</span>
+    <span class="keyword">end</span>
+    title(<span class="string">'Respota ao degrau'</span>);
+    xlabel(<span class="string">'Tempo'</span>);
+    ylabel(<span class="string">'Amplitude (v)'</span>);
+    grid <span class="string">on</span>;
+    </pre><pre class="codeoutput">
+    ks =
+
+      240.6392  129.9134   43.5051    5.2197
+
+    </pre><img vspace="5" hspace="5" src="task_5_04.png" alt="">
+            <p class="footer">
+                <br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a>
+                <br>
+            </p>
         </div>
-        <!--/introduction-->
-        <h2>Contents</h2>
-        <div>
-            <ul>
-                <li><a href="#1">configura&ccedil;&otilde;es iniciais</a></li>
-                <li><a href="#2">resposta ao degrau, desempenho e LR</a></li>
-                <li><a href="#3">identificar a &aacute;rea do LR com crit&eacute;rio</a></li>
-                <li><a href="#4">ganho diferentes sobre a &aacute;rea com crit&eacute;rio</a></li>
-            </ul>
-        </div>
-        <h2>configura&ccedil;&otilde;es iniciais<a name="1"></a></h2>
-        <p>limpar figuras, vari&aacute;veis e console</p><pre class="codeinput">close <span class="string">all</span>;
-clear;
-clc;
-</pre>
-        <h2>resposta ao degrau, desempenho e LR<a name="2"></a></h2>
-        <div>
-            <ul>
-                <li>resposta ao degrau</li>
-                <li>desempenho</li>
-                <li>LR</li>
-            </ul>
-        </div><pre class="codeinput">s = tf(<span class="string">'s'</span>);
-G = ( (s+7) ) / ( (s+5)*(s+15)*(s+20) )
+        <!--
+    ##### SOURCE BEGIN #####
+    %% sobre
+    %
+    % * Autor: Jonas Vieira de Souza
+    % * Data: 02/10/2018
+    % * Objetivo: avaliar sistemas
+    %
 
-figure(1);
-[ ~, ~, ~, ~, leg ] = step_detail( ( s + 7 ),( (s+5)*(s+15)*(s+20) ), 0, 0.01, 2, 0.1, 1, 1,  <span class="string">''</span> );
+    %% configurações iniciais
+    % limpar figuras, variáveis e console
+    close all;
+    clear;
+    clc;
 
-figure(2);
-G_polos = pole(G)
-G_zeros = zero(G)
-rlocus(G);
-title(<span class="string">'Lugar das ra&iacute;zes'</span>);
-xlabel(<span class="string">'Eixo real'</span>);
-ylabel(<span class="string">'Eixo imagin&aacute;rio'</span>);
-grid <span class="string">on</span>;
-</pre><pre class="codeoutput">
-G =
+    %% resposta ao degrau, desempenho e LR
+    % * resposta ao degrau
+    % * desempenho
+    % * LR
 
-             s + 7
-  ---------------------------
-  s^3 + 40 s^2 + 475 s + 1500
+    s = tf('s');
+    G = ( (s+7) ) / ( (s+5)*(s+15)*(s+20) ) 
 
-Continuous-time transfer function.
+    figure(1);
+    [ ~, ~, ~, ~, leg ] = step_detail( ( s + 7 ),( (s+5)*(s+15)*(s+20) ), 0, 0.01, 2, 0.1, 1, 1,  '' );
 
-G_polos =
+    figure(2);
+    G_polos = pole(G)
+    G_zeros = zero(G)
+    rlocus(G);
+    title('Lugar das raízes');
+    xlabel('Eixo real');
+    ylabel('Eixo imaginário');
+    grid on;
 
-  -20.0000
-  -15.0000
-   -5.0000
+    %% identificar a área do LR com critério
+    % * OS = 5%
+    % * ts = 1s
+    % * k = ?
+    Mp = 0.05;
+    Zeta = (1) / ( sqrt( 1 + ( (pi^2) / (log(Mp)^2) ) ) )
 
-G_zeros =
+    figure(3);
+    c0 = rlocusplot(G);
+    sgrid([Zeta, 0.75, 0.85, 0.95],[15, 24.325, 30]);
+    c0.AxesGrid.Title = 'LR com linha de amortecimento de Zeta = 0.69';
+    axis([-25 0 -50  50]);
+    xlabel('Eixo real');
+    ylabel('Eixo imaginário');
+    grid on;
 
-    -7
+    p_i = pi / ( (2/3)*0.26 )
+    p_r = (-Zeta*p_i) / sqrt(1-Zeta^2)
 
-</pre><img vspace="5" hspace="5" src="task_5_01.png" alt=""> <img vspace="5" hspace="5" src="task_5_02.png" alt="">
-        <h2>identificar a &aacute;rea do LR com crit&eacute;rio<a name="3"></a></h2>
-        <div>
-            <ul>
-                <li>OS = 5%</li>
-                <li>ts = 1s</li>
-                <li>k = ?</li>
-            </ul>
-        </div><pre class="codeinput">Mp = 0.05;
-Zeta = (1) / ( sqrt( 1 + ( (pi^2) / (log(Mp)^2) ) ) )
+    %% ganho diferentes sobre a área com critério
+    % * obter K's e polo's
+    % * plotar respostas ao degrau
 
-figure(3);
-c0 = rlocusplot(G);
-sgrid([Zeta, 0.75, 0.85, 0.95],[15, 24.325, 30]);
-c0.AxesGrid.Title = <span class="string">'LR com linha de amortecimento de Zeta = 0.69'</span>;
-axis([-25 0 -50  50]);
-xlabel(<span class="string">'Eixo real'</span>);
-ylabel(<span class="string">'Eixo imagin&aacute;rio'</span>);
-grid <span class="string">on</span>;
+    %{
+        através de [K, Polos] = rlocfind(G)
+        dado os pontos selecionados com rlocfind(G):
+            -16.82 +14.79i,
+            -16.98 +10.56i,
+            -17.24 +5.60i,
+            -18.84 -0.09i
 
-p_i = pi / ( (2/3)*0.26 )
-p_r = (-Zeta*p_i) / sqrt(1-Zeta^2)
-</pre><pre class="codeoutput">
-Zeta =
+        obtido os respectivos K:
+            240.63
+            129.91
+            43.50
+            5.21
 
-    0.6901
+        e os respecitvos Polos:
+            -16.82 +14.79i, -16.82 -14.79i, -6.34 + 0.00i
+            -16.99 +10.57i, -16.99 -10.57i, -6.01 + 0.00i
+            -17.26 + 5.60i, -17.26 - 5.60i, -5.47 + 0.00i
+            -18.83, -16.09, -5.06
+    %}
 
-p_i =
-
-   18.1246
-
-p_r =
-
-  -17.2831
-
-</pre><img vspace="5" hspace="5" src="task_5_03.png" alt="">
-        <h2>ganho diferentes sobre a &aacute;rea com crit&eacute;rio<a name="4"></a></h2>
-        <div>
-            <ul>
-                <li>obter K's e polo's</li>
-                <li>plotar respostas ao degrau</li>
-            </ul>
-        </div><pre class="codeinput"><span class="comment">%{
-</span><span class="comment">    atrav&eacute;s de [K, Polos] = rlocfind(G)
-</span><span class="comment">    dado os pontos selecionados com rlocfind(G):
-</span><span class="comment">        -16.82 +14.79i,
-</span><span class="comment">        -16.98 +10.56i,
-</span><span class="comment">        -17.24 +5.60i,
-</span><span class="comment">        -18.84 -0.09i
-</span><span class="comment">
-</span><span class="comment">    obtido os respectivos K:
-</span><span class="comment">        240.63
-</span><span class="comment">        129.91
-</span><span class="comment">        43.50
-</span><span class="comment">        5.21
-</span><span class="comment">
-</span><span class="comment">    e os respecitvos Polos:
-</span><span class="comment">        -16.82 +14.79i, -16.82 -14.79i, -6.34 + 0.00i
-</span><span class="comment">        -16.99 +10.57i, -16.99 -10.57i, -6.01 + 0.00i
-</span><span class="comment">        -17.26 + 5.60i, -17.26 - 5.60i, -5.47 + 0.00i
-</span><span class="comment">        -18.83, -16.09, -5.06
-</span><span class="comment">%}
-</span>
-figure(4)
-ks = [240.6392, 129.9134, 43.5051, 5.2197]
-<span class="keyword">for</span> i = 1:4
-    sys_cl = feedback(G*ks(i),1);
-    step(sys_cl)
-    hold <span class="string">on</span>
-<span class="keyword">end</span>
-title(<span class="string">'Respota ao degrau'</span>);
-xlabel(<span class="string">'Tempo'</span>);
-ylabel(<span class="string">'Amplitude (v)'</span>);
-grid <span class="string">on</span>;
-</pre><pre class="codeoutput">
-ks =
-
-  240.6392  129.9134   43.5051    5.2197
-
-</pre><img vspace="5" hspace="5" src="task_5_04.png" alt="">
-        <p class="footer">
-            <br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a>
-            <br>
-        </p>
-    </div>
-    <!--
-##### SOURCE BEGIN #####
-%% sobre
-%
-% * Autor: Jonas Vieira de Souza
-% * Data: 02/10/2018
-% * Objetivo: avaliar sistemas
-%
-
-%% configurações iniciais
-% limpar figuras, variáveis e console
-close all;
-clear;
-clc;
-
-%% resposta ao degrau, desempenho e LR
-% * resposta ao degrau
-% * desempenho
-% * LR
-
-s = tf('s');
-G = ( (s+7) ) / ( (s+5)*(s+15)*(s+20) ) 
-
-figure(1);
-[ ~, ~, ~, ~, leg ] = step_detail( ( s + 7 ),( (s+5)*(s+15)*(s+20) ), 0, 0.01, 2, 0.1, 1, 1,  '' );
-
-figure(2);
-G_polos = pole(G)
-G_zeros = zero(G)
-rlocus(G);
-title('Lugar das raízes');
-xlabel('Eixo real');
-ylabel('Eixo imaginário');
-grid on;
-
-%% identificar a área do LR com critério
-% * OS = 5%
-% * ts = 1s
-% * k = ?
-Mp = 0.05;
-Zeta = (1) / ( sqrt( 1 + ( (pi^2) / (log(Mp)^2) ) ) )
-
-figure(3);
-c0 = rlocusplot(G);
-sgrid([Zeta, 0.75, 0.85, 0.95],[15, 24.325, 30]);
-c0.AxesGrid.Title = 'LR com linha de amortecimento de Zeta = 0.69';
-axis([-25 0 -50  50]);
-xlabel('Eixo real');
-ylabel('Eixo imaginário');
-grid on;
-
-p_i = pi / ( (2/3)*0.26 )
-p_r = (-Zeta*p_i) / sqrt(1-Zeta^2)
-
-%% ganho diferentes sobre a área com critério
-% * obter K's e polo's
-% * plotar respostas ao degrau
-
-%{
-    através de [K, Polos] = rlocfind(G)
-    dado os pontos selecionados com rlocfind(G):
-        -16.82 +14.79i,
-        -16.98 +10.56i,
-        -17.24 +5.60i,
-        -18.84 -0.09i
-
-    obtido os respectivos K:
-        240.63
-        129.91
-        43.50
-        5.21
-
-    e os respecitvos Polos:
-        -16.82 +14.79i, -16.82 -14.79i, -6.34 + 0.00i
-        -16.99 +10.57i, -16.99 -10.57i, -6.01 + 0.00i
-        -17.26 + 5.60i, -17.26 - 5.60i, -5.47 + 0.00i
-        -18.83, -16.09, -5.06
-%}
-
-figure(4)
-ks = [240.6392, 129.9134, 43.5051, 5.2197]
-for i = 1:4
-    sys_cl = feedback(G*ks(i),1);
-    step(sys_cl)
-    hold on
-end
-title('Respota ao degrau');
-xlabel('Tempo');
-ylabel('Amplitude (v)');
-grid on;
-##### SOURCE END #####
--->
-</body>
+    figure(4)
+    ks = [240.6392, 129.9134, 43.5051, 5.2197]
+    for i = 1:4
+        sys_cl = feedback(G*ks(i),1);
+        step(sys_cl)
+        hold on
+    end
+    title('Respota ao degrau');
+    xlabel('Tempo');
+    ylabel('Amplitude (v)');
+    grid on;
+    ##### SOURCE END #####
+    -->
+    </body>
 
 </html>
