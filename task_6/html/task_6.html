@@ -9,200 +9,200 @@
    PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <!--
-         This HTML was auto-generated from MATLAB code.
-         To make changes, update the MATLAB code and republish this document.
-               -->
-    <title>Task 6</title>
-    <meta name="generator" content="MATLAB 8.3">
-    <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-    <meta name="DC.date" content="2018-10-29">
-    <meta name="DC.source" content="task_6.m">
-    <meta name="author" content="Jonas Vieira de Souza" />
-    <meta name="robots" content="index, follow" />
-    <meta name="revised" content="02/10/2018" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="reply-to" content="jonas.vieira.de.souza@gmail.com" />
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <link rel="icon" type="image/png" href="logo_ifsc.png" />
-</head>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <!--
+             This HTML was auto-generated from MATLAB code.
+             To make changes, update the MATLAB code and republish this document.
+                   -->
+        <title>Task 6</title>
+        <meta name="generator" content="MATLAB 8.3">
+        <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+        <meta name="DC.date" content="2018-10-29">
+        <meta name="DC.source" content="task_6.m">
+        <meta name="author" content="Jonas Vieira de Souza" />
+        <meta name="robots" content="index, follow" />
+        <meta name="revised" content="02/10/2018" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="reply-to" content="jonas.vieira.de.souza@gmail.com" />
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <link rel="icon" type="image/png" href="logo_ifsc.png" />
+    </head>
 
-<body>
-    <div class="content">
-        <h1>sobre</h1>
-        <!--introduction-->
-        <div>
-            <ul>
-                <li>Autor: Jonas Vieira de Souza</li>
-                <li>Data: 02/10/2018</li>
-                <li>Objetivo: analisar sistema de controle</li>
-            </ul>
-        </div>
-        <!--/introduction-->
-        <h2>Contents</h2>
-        <div>
-            <ul>
-                <li><a href="#1">Configura&ccedil;&otilde;es iniciais</a></li>
-                <li><a href="#2">Constantes do modelo do motor CC</a></li>
-                <li><a href="#3">Respota do sistema em malha aberta</a></li>
-                <li><a href="#4">Respota do sistema em malha fechada</a></li>
-                <li><a href="#5">Resposta do sistema em malha aberta &agrave; velocidade</a></li>
-            </ul>
-        </div>
-        <h2>Configura&ccedil;&otilde;es iniciais<a name="1"></a></h2>
-        <p>limpar figuras, vari&aacute;veis e console</p><pre class="codeinput">close <span class="string">all</span>;
-clear;
-clc;
-</pre>
-        <h2>Constantes do modelo do motor CC<a name="2"></a></h2>
-        <p>Jm, b, Ke, Kt, Ra, La</p><pre class="codeinput">Jm = 3.228*10^-6;
-b  = 3.5*10^-6;
-Ke = 0.0275;
-Kt = 0.0275;
-Ra = 4;
-La = 2.75*10^-6;
+    <body>
+        <div class="content">
+            <h1>sobre</h1>
+            <!--introduction-->
+            <div>
+                <ul>
+                    <li>Autor: Jonas Vieira de Souza</li>
+                    <li>Data: 02/10/2018</li>
+                    <li>Objetivo: analisar sistema de controle</li>
+                </ul>
+            </div>
+            <!--/introduction-->
+            <h2>Contents</h2>
+            <div>
+                <ul>
+                    <li><a href="#1">Configura&ccedil;&otilde;es iniciais</a></li>
+                    <li><a href="#2">Constantes do modelo do motor CC</a></li>
+                    <li><a href="#3">Respota do sistema em malha aberta</a></li>
+                    <li><a href="#4">Respota do sistema em malha fechada</a></li>
+                    <li><a href="#5">Resposta do sistema em malha aberta &agrave; velocidade</a></li>
+                </ul>
+            </div>
+            <h2>Configura&ccedil;&otilde;es iniciais<a name="1"></a></h2>
+            <p>limpar figuras, vari&aacute;veis e console</p><pre class="codeinput">close <span class="string">all</span>;
+    clear;
+    clc;
+    </pre>
+            <h2>Constantes do modelo do motor CC<a name="2"></a></h2>
+            <p>Jm, b, Ke, Kt, Ra, La</p><pre class="codeinput">Jm = 3.228*10^-6;
+    b  = 3.5*10^-6;
+    Ke = 0.0275;
+    Kt = 0.0275;
+    Ra = 4;
+    La = 2.75*10^-6;
 
-k = Kt/(Ra*Jm);
-a = (b/Jm) + ((Ke*Kt)/(Ra*Jm));
-</pre>
-        <h2>Respota do sistema em malha aberta<a name="3"></a></h2>
-        <div>
-            <ul>
-                <li>em malha aberta</li>
-                <li>resposta ao degrau</li>
-                <li>poles</li>
-            </ul>
-        </div><pre class="codeinput">s = tf(<span class="string">'s'</span>);
-G = (k) / (s*(s+a))
-figure(1);
-step(G);
-title(<span class="string">'FTMA: resposta ao degrau'</span>);
-grid <span class="string">on</span>;
-pole(G)
-</pre><pre class="codeoutput">
-G =
-
-      2130
-  -------------
-  s^2 + 59.65 s
-
-Continuous-time transfer function.
-
-ans =
-
-         0
-  -59.6538
-
-</pre><img vspace="5" hspace="5" src="task_6_01.png" alt="">
-        <h2>Respota do sistema em malha fechada<a name="4"></a></h2>
-        <div>
-            <ul>
-                <li>FTMFq</li>
-                <li>step</li>
-                <li>rlocus</li>
-            </ul>
-        </div><pre class="codeinput">FTMF = feedback(G, 1)
-figure(2);
-subplot(1,2,1);
-step(FTMF);
-title(<span class="string">'FTMF: resposta ao degrau'</span>);
-grid <span class="string">on</span>;
-subplot(1,2,2);
-rlocus(FTMF);
-title(<span class="string">'Lugar das ra&iacute;zes'</span>);
-xlabel(<span class="string">'Eixo real'</span>);
-ylabel(<span class="string">'Eixo imagin&aacute;rio'</span>);
-grid <span class="string">on</span>;
-</pre><pre class="codeoutput">
-FTMF =
+    k = Kt/(Ra*Jm);
+    a = (b/Jm) + ((Ke*Kt)/(Ra*Jm));
+    </pre>
+            <h2>Respota do sistema em malha aberta<a name="3"></a></h2>
+            <div>
+                <ul>
+                    <li>em malha aberta</li>
+                    <li>resposta ao degrau</li>
+                    <li>poles</li>
+                </ul>
+            </div><pre class="codeinput">s = tf(<span class="string">'s'</span>);
+    G = (k) / (s*(s+a))
+    figure(1);
+    step(G);
+    title(<span class="string">'FTMA: resposta ao degrau'</span>);
+    grid <span class="string">on</span>;
+    pole(G)
+    </pre><pre class="codeoutput">
+    G =
 
           2130
-  --------------------
-  s^2 + 59.65 s + 2130
+      -------------
+      s^2 + 59.65 s
 
-Continuous-time transfer function.
+    Continuous-time transfer function.
 
-</pre><img vspace="5" hspace="5" src="task_6_02.png" alt="">
-        <h2>Resposta do sistema em malha aberta &agrave; velocidade<a name="5"></a></h2>
-        <div>
-            <ul>
-                <li>FTMAv</li>
-                <li>Va(s) -&gt; [ ? ] -&gt; Vel_Ang(s)</li>
-            </ul>
-        </div><pre class="codeinput">figure(3);
-[ ~, ~, ~, ~, leg ] = step_detail( (s*k + 0), s^2 + s*a, 0, 0.001, 0.2, 0.1, 1, 1,  <span class="string">''</span> );
-</pre><img vspace="5" hspace="5" src="task_6_03.png" alt="">
-        <p class="footer">
-            <br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a>
-            <br>
-        </p>
-    </div>
-    <!--
-##### SOURCE BEGIN #####
-%% sobre
-%
-% * Autor: Jonas Vieira de Souza
-% * Data: 02/10/2018
-% * Objetivo: analisar sistema de controle
-%
+    ans =
 
-%% Configurações iniciais
-% limpar figuras, variáveis e console
-close all;
-clear;
-clc;
+             0
+      -59.6538
 
-%% Constantes do modelo do motor CC
-% Jm, b, Ke, Kt, Ra, La
-Jm = 3.228*10^-6;
-b  = 3.5*10^-6;
-Ke = 0.0275;
-Kt = 0.0275;
-Ra = 4;
-La = 2.75*10^-6;
+    </pre><img vspace="5" hspace="5" src="task_6_01.png" alt="">
+            <h2>Respota do sistema em malha fechada<a name="4"></a></h2>
+            <div>
+                <ul>
+                    <li>FTMFq</li>
+                    <li>step</li>
+                    <li>rlocus</li>
+                </ul>
+            </div><pre class="codeinput">FTMF = feedback(G, 1)
+    figure(2);
+    subplot(1,2,1);
+    step(FTMF);
+    title(<span class="string">'FTMF: resposta ao degrau'</span>);
+    grid <span class="string">on</span>;
+    subplot(1,2,2);
+    rlocus(FTMF);
+    title(<span class="string">'Lugar das ra&iacute;zes'</span>);
+    xlabel(<span class="string">'Eixo real'</span>);
+    ylabel(<span class="string">'Eixo imagin&aacute;rio'</span>);
+    grid <span class="string">on</span>;
+    </pre><pre class="codeoutput">
+    FTMF =
 
-k = Kt/(Ra*Jm);
-a = (b/Jm) + ((Ke*Kt)/(Ra*Jm));
+              2130
+      --------------------
+      s^2 + 59.65 s + 2130
 
-%% Respota do sistema em malha aberta
-% * em malha aberta
-% * resposta ao degrau
-% * poles
-s = tf('s');
-G = (k) / (s*(s+a))
-figure(1);
-step(G);
-title('FTMA: resposta ao degrau');
-grid on;
-pole(G)
+    Continuous-time transfer function.
 
-%% Respota do sistema em malha fechada
-% * FTMFq
-% * step
-% * rlocus
-FTMF = feedback(G, 1)
-figure(2);
-subplot(1,2,1);
-step(FTMF);
-title('FTMF: resposta ao degrau');
-grid on;
-subplot(1,2,2);
-rlocus(FTMF);
-title('Lugar das raízes');
-xlabel('Eixo real');
-ylabel('Eixo imaginário');
-grid on;
+    </pre><img vspace="5" hspace="5" src="task_6_02.png" alt="">
+            <h2>Resposta do sistema em malha aberta &agrave; velocidade<a name="5"></a></h2>
+            <div>
+                <ul>
+                    <li>FTMAv</li>
+                    <li>Va(s) -&gt; [ ? ] -&gt; Vel_Ang(s)</li>
+                </ul>
+            </div><pre class="codeinput">figure(3);
+    [ ~, ~, ~, ~, leg ] = step_detail( (s*k + 0), s^2 + s*a, 0, 0.001, 0.2, 0.1, 1, 1,  <span class="string">''</span> );
+    </pre><img vspace="5" hspace="5" src="task_6_03.png" alt="">
+            <p class="footer">
+                <br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a>
+                <br>
+            </p>
+        </div>
+        <!--
+    ##### SOURCE BEGIN #####
+    %% sobre
+    %
+    % * Autor: Jonas Vieira de Souza
+    % * Data: 02/10/2018
+    % * Objetivo: analisar sistema de controle
+    %
 
-%% Resposta do sistema em malha aberta à velocidade
-% * FTMAv
-% * Va(s) -> [ ? ] -> Vel_Ang(s)
-figure(3);
-[ ~, ~, ~, ~, leg ] = step_detail( (s*k + 0), s^2 + s*a, 0, 0.001, 0.2, 0.1, 1, 1,  '' );
+    %% Configurações iniciais
+    % limpar figuras, variáveis e console
+    close all;
+    clear;
+    clc;
 
-##### SOURCE END #####
--->
-</body>
+    %% Constantes do modelo do motor CC
+    % Jm, b, Ke, Kt, Ra, La
+    Jm = 3.228*10^-6;
+    b  = 3.5*10^-6;
+    Ke = 0.0275;
+    Kt = 0.0275;
+    Ra = 4;
+    La = 2.75*10^-6;
+
+    k = Kt/(Ra*Jm);
+    a = (b/Jm) + ((Ke*Kt)/(Ra*Jm));
+
+    %% Respota do sistema em malha aberta
+    % * em malha aberta
+    % * resposta ao degrau
+    % * poles
+    s = tf('s');
+    G = (k) / (s*(s+a))
+    figure(1);
+    step(G);
+    title('FTMA: resposta ao degrau');
+    grid on;
+    pole(G)
+
+    %% Respota do sistema em malha fechada
+    % * FTMFq
+    % * step
+    % * rlocus
+    FTMF = feedback(G, 1)
+    figure(2);
+    subplot(1,2,1);
+    step(FTMF);
+    title('FTMF: resposta ao degrau');
+    grid on;
+    subplot(1,2,2);
+    rlocus(FTMF);
+    title('Lugar das raízes');
+    xlabel('Eixo real');
+    ylabel('Eixo imaginário');
+    grid on;
+
+    %% Resposta do sistema em malha aberta à velocidade
+    % * FTMAv
+    % * Va(s) -> [ ? ] -> Vel_Ang(s)
+    figure(3);
+    [ ~, ~, ~, ~, leg ] = step_detail( (s*k + 0), s^2 + s*a, 0, 0.001, 0.2, 0.1, 1, 1,  '' );
+
+    ##### SOURCE END #####
+    -->
+    </body>
 
 </html>
