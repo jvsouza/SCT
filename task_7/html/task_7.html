@@ -9,443 +9,441 @@
   PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <!--
-    This HTML was auto-generated from MATLAB code.
-    To make changes, update the MATLAB code and republish this document.
-          -->
-          <title>Task 7</title>
-          <meta name="generator" content="MATLAB 8.3">
-          <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-          <meta name="DC.date" content="2018-11-01">
-          <meta name="DC.source" content="task_7.m">
-          <meta name="author" content="Jonas Vieira de Souza" />
-          <meta name="robots" content="index, follow" />
-          <meta name="revised" content="02/10/2018" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <meta name="reply-to" content="jonas.vieira.de.souza@gmail.com" />
-          <link rel="stylesheet" type="text/css" href="style.css" />
-          <link rel="icon" type="image/png" href="logo_ifsc.png" width="70%"/>
-    </head>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+      <title>Task 7</title>
+      <meta name="generator" content="MATLAB 8.3">
+      <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+      <meta name="DC.date" content="2018-11-01">
+      <meta name="DC.source" content="task_7.m">
+      <meta name="author" content="Jonas Vieira de Souza" />
+      <meta name="robots" content="index, follow" />
+      <meta name="revised" content="02/10/2018" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="reply-to" content="jonas.vieira.de.souza@gmail.com" />
+      <link rel="stylesheet" type="text/css" href="style.css" />
+      <link rel="icon" type="image/png" href="logo_ifsc.png" width="70%"/>
+</head>
 
-    <body>
-        <div class="content">
-            <h1>Sobre</h1>
-            <!--introduction-->
-            <div>
-                <ul>
-                    <li>Autor: Jonas Vieira de Souza</li>
-                    <li>Data: 01/11/2018</li>
-                    <li>Objetivo: analisar respostas em frequ&ecirc;ncia atrav&eacute;s do diagram de Bode</li>
-                </ul>
-            </div>
-            <!--/introduction-->
-            <h2>Contents</h2>
-            <div>
-                <ul>
-                    <li><a href="#1">Configura&ccedil;&otilde;es iniciais</a></li>
-                    <li><a href="#2">1. Resposta a entrada senoidal</a></li>
-                    <li><a href="#3">2. Sistema de 2&ordf; ordem sem amortecimento</a></li>
-                    <li><a href="#4">3. Resposta a entrada senoidal em diferentes frequ&ecirc;ncias</a></li>
-                    <li><a href="#5">4. Diagramde Bode</a></li>
-                    <li><a href="#6">5. An&aacute;lise em fun&ccedil;&atilde;o da vari&ccedil;&atilde;o de par&acirc;metros</a></li>
-                </ul>
-            </div>
-            <h2>Configura&ccedil;&otilde;es iniciais<a name="1"></a></h2>
-            <div>
-                <ul>
-                    <li>desabilitar mensagens 'warning'</li>
-                    <li>limpar figuras, vari&aacute;veis e console</li>
-                </ul>
-            </div><pre class="codeinput">warning(<span class="string">'off'</span>)
-    close <span class="string">all</span>;
-    clear;
-    clc;
-    </pre>
-            <h2>1. Resposta a entrada senoidal<a name="2"></a></h2>
-            <div>
-                <ul>
-                    <li>resposta do sistema a entrada senoidal</li>
-                    <li>determinar ganho e fase</li>
-                    <li>obter a resposta em frequ&ecirc;ncia atrav&eacute;s da fun&ccedil;&atilde;o freqresp</li>
-                    <li>determinar a magnitude e fase atrav&eacute;s da fun&ccedil;&atilde;o freqresp</li>
-                </ul>
-            </div><pre class="codeinput">m = 500;
-    b = 1000;
-    k = 15000;
-    s = tf(<span class="string">'s'</span>);
-    Gsv = (m*s + b) / (m*s^2 + b*s + k)
-    t = 0:0.02:10;
-    w = 5;
-    u=sin(w*t);
-    x0 = 0;
-    figure(1)
-    [y, t] = lsim(Gsv, u, t, 0);
-    h = plot(t, u, t, y);
-    title(<span class="string">'resposta do sistema G_1(s) a entrada senoidal com w = 5 rad/s'</span>)
-    xlabel(<span class="string">'tempo (s)'</span>)
-    ylabel(<span class="string">'amplitude (v)'</span>)
-    grid <span class="string">on</span>;
-    legend(<span class="string">'sinal de entrada'</span>, <span class="string">'sinal de sa&iacute;da'</span>);
-    text(1,.7,<span class="string">'$G_1(s) = \frac{500s + 1000}{500s^{2} + 1000s + 25000}$'</span>,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'FontSize'</span>,18)
-
-    [u_value, u_idx] = max(u);
-    u_value;
-    u_t = t(u_idx);
-    [y_value, y_idx] = max(y);
-    y_value;
-    y_t = t(y_idx);
-    rel_ganho = y_value / u_value
-    Dt = u_t - y_t;
-    dif_fase = w*Dt
-
-    freqGsv = freqresp(Gsv, 5)
-
-    mag = abs(freqGsv)
-    fase = angle(freqGsv)
-    </pre><pre class="codeoutput">
-    Gsv =
-
-            500 s + 1000
-      ------------------------
-      500 s^2 + 1000 s + 15000
-
-    Continuous-time transfer function.
-
-    rel_ganho =
-
-        0.4822
-
-    dif_fase =
-
-        0.1000
-
-    freqGsv =
-
-       0.4800 + 0.0400i
-
-    mag =
-
-        0.4817
-
-    fase =
-
-        0.0831
-
-    </pre><img vspace="5" hspace="5" src="task_7_01.png" width="70%"alt="">
-            <h2>2. Sistema de 2&ordf; ordem sem amortecimento<a name="3"></a></h2>
-            <div>
-                <ul>
-                    <li>determinar wn</li>
-                    <li>obter a resposta a entrada senoidal em wn</li>
-                    <li>aplicar a fun&ccedil;&atilde;o freqresp para wn</li>
-                </ul>
-            </div><pre class="codeinput">Gmm = 1/(s^2+5)
-    wn = sqrt(5)
-    t = 0:0.1:20;
-    u=sin(wn*t);
-    [y, t] = lsim(Gmm, u, t, 0);
-    figure(2)
-    h = plot(t, u, t, y);
-    title(<span class="string">'resposta do sistema G_2(s) a entrada senoidal com wn = 2.2361 rad/s'</span>)
-    xlabel(<span class="string">'tempo (s)'</span>)
-    ylabel(<span class="string">'amplitude (v)'</span>)
-    grid <span class="string">on</span>;
-    legend(<span class="string">'sinal de entrada'</span>, <span class="string">'sinal de sa&iacute;da'</span>);
-    text(2,3.5,<span class="string">'$G_2(s) = \frac{1}{s^{2} + 5}$'</span>,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'FontSize'</span>,18)
-    freqGmm = freqresp(Gmm, wn)
-    </pre><pre class="codeoutput">
-    Gmm =
-
-         1
-      -------
-      s^2 + 5
-
-    Continuous-time transfer function.
-
-    wn =
-
-        2.2361
-
-    freqGmm =
-
-       Inf
-
-    </pre><img vspace="5" hspace="5" src="task_7_02.png" width="70%"alt="">
-            <h2>3. Resposta a entrada senoidal em diferentes frequ&ecirc;ncias<a name="4"></a></h2>
-            <div>
-                <ul>
-                    <li>obter a respota a entrada senoidal em diferentes frequ&ecirc;ncias</li>
-                    <li>para Gmm, obter as respostas para: w=wn/2, w=wn, w=2wn, w=10wn</li>
-                    <li>para o vetor w = [ 0.1*wn, 0.25*wn, 0.5*wn, 2*wn, 4*wn, 10*wn ]</li>
-                    <li>obter a resposta a fun&ccedil;&atilde;o freqresp para Gmm dado um vetor de wn's</li>
-                    <li>obter o vetor de magnitudes da fun&ccedil;&atilde;o freqresp</li>
-                    <li>plotar o vetor de magnitudes da fun&ccedil;&atilde;o freqresp</li>
-                </ul>
-            </div><pre class="codeinput">Gmm = 1/(s^2+5);
-    wn = sqrt(5);
-    vector_wn = [wn/2 2*wn 10*wn];
-    vector_wn_txt = {<span class="string">'wn/2'</span> <span class="string">'2*wn'</span> <span class="string">'10*wn'</span>};
-    figure(3)
-    t = 0:0.01:5;
-    <span class="keyword">for</span> i = 1:3
-        subplot(3,1,i);
-        u=sin(vector_wn(i)*t);
-        [y, t] = lsim(Gmm, u, t, 0);
-        plot(t, u, t, y);
-        hold <span class="string">on</span>
-        txt1 = <span class="string">'resposta do sistema G_2(s) a entrada senoidal com..'</span>;
-        txt2 = strcat( txt1, vector_wn_txt(i));
-        txt3 = strcat( txt2, <span class="string">', w =..'</span>);
-        txt4 = strcat( txt3, num2str(vector_wn(i)) );
-        txt5 = strcat( txt4, <span class="string">' rad/s'</span> );
-        title(txt5)
-        xlabel(<span class="string">'tempo (s)'</span>)
-        ylabel(<span class="string">'amplitude (v)'</span>)
-        legend(<span class="string">'sinal de entrada'</span>, <span class="string">'sinal de sa&iacute;da'</span>);
-        grid <span class="string">on</span>;
-    <span class="keyword">end</span>
-
-    w = [0.1*wn 0.25*wn 0.5*wn wn*0.75 wn wn*1.25 2*wn 4*wn 10*wn];
-    freqGmm = freqresp(Gmm, w);
-    magGmm = abs(squeeze(freqGmm));
-    figure(4)
-    plot(w, magGmm, <span class="string">'.-'</span>);
-    grid <span class="string">on</span>;
-    xlabel(<span class="string">'frequ&ecirc;ncia (hz)'</span>)
-    ylabel(<span class="string">'amplitude (v)'</span>)
-    title(<span class="string">'amplitude em fun&ccedil;&atilde;o das frequ&ecirc;ncias do sistema de G_2(s)'</span>);
-    text(10,.25,<span class="string">'$G_2(s) = \frac{1}{s^{2} + 5}$'</span>,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'FontSize'</span>,18)
-    </pre><img vspace="5" hspace="5" src="task_7_03.png" width="70%"alt=""> <img vspace="5" hspace="5" src="task_7_04.png" width="70%"alt="">
-            <h2>4. Diagramde Bode<a name="5"></a></h2>
-            <div>
-                <ul>
-                    <li>plotar o digrama de Bode do sistema Gmm</li>
-                    <li>obter o n&iacute;vel dc do sistema Gmm</li>
-                    <li>obter a primeira frequ&ecirc;ncia em 3db</li>
-                </ul>
-            </div><pre class="codeinput">figure(5)
-    Gmm = 1/(s^2+5);
-    bode(Gmm)
-    grid <span class="string">on</span>;
-    nivel_dc = dcgain(Gmm)
-    first_3db = bandwidth(Gmm)
-    title(<span class="string">'diagram de Bode do sistema de G_2(s)'</span>);
-    text(0.2, 140,<span class="string">'$G_2(s) = \frac{1}{s^{2} + 5}$'</span>,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'FontSize'</span>,18)
-    </pre><pre class="codeoutput">
-    nivel_dc =
-
-        0.2000
-
-    first_3db =
-
-        3.4731
-
-    </pre><img vspace="5" hspace="5" src="task_7_05.png" width="70%"alt="">
-            <h2>5. An&aacute;lise em fun&ccedil;&atilde;o da vari&ccedil;&atilde;o de par&acirc;metros<a name="6"></a></h2>
-            <div>
-                <ul>
-                    <li>observar a resposta em frequ&ecirc;ncia para diferntes amortecimentos</li>
-                    <li>obter as curvas de magnitude e fase diferentes parametros</li>
-                </ul>
-            </div><pre class="codeinput">m = 1;
-    k = 5;
-    b = [0.1 0.5 0.8 1 2 4];
-    figure(6)
-    <span class="keyword">for</span> i = 1:6
-        G3 = 1 / (m*s^2 + b(i)*s + k);
-        bodeplot(G3)
-        hold <span class="string">on</span>
-    <span class="keyword">end</span>
-    grid <span class="string">on</span>;
-    b_leg = {<span class="string">'b=0.1'</span> <span class="string">'b=0.5'</span> <span class="string">'b=0.8'</span> <span class="string">'b=1'</span> <span class="string">'b=2'</span> <span class="string">'b=4'</span>};
-    legend(b_leg);
-    text(0.03, -90,<span class="string">'$G_3(s) = \frac{1}{s^{2} + b.s + 5}$'</span>,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'FontSize'</span>,18)
-    title(<span class="string">'diagrama de Bode do sistema G_3 variando b'</span>);
-
-    b = 0.6;
-    k = 5;
-    m = [2 3 4 6];
-    figure(7)
-    <span class="keyword">for</span> i = 1:4
-        G4 = 1 / (m(i)*s^2 + b*s + k);
-        bodeplot(G4)
-        hold <span class="string">on</span>
-    <span class="keyword">end</span>
-    grid <span class="string">on</span>;
-    m_leg = {<span class="string">'m=2'</span> <span class="string">'m=3'</span> <span class="string">'m=4'</span> <span class="string">'m=6'</span>};
-    legend(m_leg);
-    text(0.15, -90,<span class="string">'$G_4(s) = \frac{1}{m.s^{2} + 0.6.s + 5}$'</span>,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'FontSize'</span>,18)
-    title(<span class="string">'diagrama de Bode do sistema G_4 variando m'</span>);
-    </pre><img vspace="5" hspace="5" src="task_7_06.png" width="70%"alt=""> <img vspace="5" hspace="5" src="task_7_07.png" width="70%"alt="">
-            <p class="footer">
-                <br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a>
-                <br>
-            </p>
+<body>
+    <div class="content">
+        <h1>Sobre</h1>
+        <!--introduction-->
+        <div>
+            <ul>
+                <li>Autor: Jonas Vieira de Souza</li>
+                <li>Data: 01/11/2018</li>
+                <li>Objetivo: analisar respostas em frequ&ecirc;ncia atrav&eacute;s do diagrama de Bode</li>
+            </ul>
         </div>
-        <!--
-    ##### SOURCE BEGIN #####
-    %% Sobre
-    %
-    % * Autor: Jonas Vieira de Souza
-    % * Data: 01/11/2018
-    % * Objetivo: analisar respostas em frequência através do diagram de Bode
-    %
+        <!--/introduction-->
+        <h2>Contents</h2>
+        <div>
+            <ul>
+                <li><a href="#1">Configura&ccedil;&otilde;es iniciais</a></li>
+                <li><a href="#2">1. Resposta a entrada senoidal</a></li>
+                <li><a href="#3">2. Sistema de 2&ordf; ordem sem amortecimento</a></li>
+                <li><a href="#4">3. Resposta a entrada senoidal em diferentes frequ&ecirc;ncias</a></li>
+                <li><a href="#5">4. Diagrama de Bode</a></li>
+                <li><a href="#6">5. An&aacute;lise em fun&ccedil;&atilde;o da vari&ccedil;&atilde;o de par&acirc;metros</a></li>
+            </ul>
+        </div>
+        <h2>Configura&ccedil;&otilde;es iniciais<a name="1"></a></h2>
+        <div>
+            <ul>
+                <li>desabilitar mensagens 'warning'</li>
+                <li>limpar figuras, vari&aacute;veis e console</li>
+            </ul>
+        </div><pre class="codeinput">warning(<span class="string">'off'</span>);
+close <span class="string">all</span>;
+clear;
+clc;
+</pre>
+        <h2>1. Resposta a entrada senoidal<a name="2"></a></h2>
+        <div>
+            <ul>
+                <li>resposta do sistema a entrada senoidal</li>
+                <li>determinar ganho e fase</li>
+                <li>obter a resposta em frequ&ecirc;ncia atrav&eacute;s da fun&ccedil;&atilde;o freqresp</li>
+                <li>determinar a magnitude e fase atrav&eacute;s da fun&ccedil;&atilde;o freqresp</li>
+            </ul>
+        </div><pre class="codeinput">m = 500;
+b = 1000;
+k = 15000;
+s = tf(<span class="string">'s'</span>);
+Gsv = (m*s + b) / (m*s^2 + b*s + k)
+t = 0:0.02:10;
+w = 5;
+u=sin(w*t);
+x0 = 0;
+figure(1)
+[y, t] = lsim(Gsv, u, t, 0);
+h = plot(t, u, t, y);
+title(<span class="string">'resposta do sistema G_1(s) a entrada senoidal com w = 5 rad/s'</span>)
+xlabel(<span class="string">'tempo (s)'</span>)
+ylabel(<span class="string">'amplitude (v)'</span>)
+grid <span class="string">on</span>;
+legend(<span class="string">'sinal de entrada'</span>, <span class="string">'sinal de sa&iacute;da'</span>);
+text(1,.7,<span class="string">'$G_1(s) = \frac{500s + 1000}{500s^{2} + 1000s + 25000}$'</span>,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'FontSize'</span>,18)
 
-    %% Configurações iniciais
-    % * desabilitar mensagens 'warning'
-    % * limpar figuras, variáveis e console
-    warning('off')
-    close all;
-    clear;
-    clc;
+[u_value, u_idx] = max(u);
+u_value;
+u_t = t(u_idx);
+[y_value, y_idx] = max(y);
+y_value;
+y_t = t(y_idx);
+rel_ganho = y_value / u_value
+Dt = u_t - y_t;
+dif_fase = w*Dt
 
-    %% 1. Resposta a entrada senoidal
-    % * resposta do sistema a entrada senoidal
-    % * determinar ganho e fase
-    % * obter a resposta em frequência através da função freqresp
-    % * determinar a magnitude e fase através da função freqresp
-    m = 500;
-    b = 1000;
-    k = 15000;
-    s = tf('s');
-    Gsv = (m*s + b) / (m*s^2 + b*s + k)
-    t = 0:0.02:10;
-    w = 5;
-    u=sin(w*t);
-    x0 = 0;
-    figure(1)
-    [y, t] = lsim(Gsv, u, t, 0);
-    h = plot(t, u, t, y);
-    title('resposta do sistema G_1(s) a entrada senoidal com w = 5 rad/s')
-    xlabel('tempo (s)')
-    ylabel('amplitude (v)')
-    grid on;
-    legend('sinal de entrada', 'sinal de saída');
-    text(1,.7,'$G_1(s) = \frac{500s + 1000}{500s^{2} + 1000s + 25000}$','interpreter','latex','FontSize',18)
+freqGsv = freqresp(Gsv, 5)
 
-    [u_value, u_idx] = max(u);
-    u_value;
-    u_t = t(u_idx);
-    [y_value, y_idx] = max(y);
-    y_value;
-    y_t = t(y_idx);
-    rel_ganho = y_value / u_value
-    Dt = u_t - y_t;
-    dif_fase = w*Dt
+mag = abs(freqGsv)
+fase = angle(freqGsv)
+</pre><pre class="codeoutput">
+Gsv =
 
-    freqGsv = freqresp(Gsv, 5)
+        500 s + 1000
+  ------------------------
+  500 s^2 + 1000 s + 15000
 
-    mag = abs(freqGsv)
-    fase = angle(freqGsv)
+Continuous-time transfer function.
 
-    %% 2. Sistema de 2ª ordem sem amortecimento
-    % * determinar wn
-    % * obter a resposta a entrada senoidal em wn
-    % * aplicar a função freqresp para wn
-    Gmm = 1/(s^2+5)
-    wn = sqrt(5)
-    t = 0:0.1:20;
-    u=sin(wn*t);
+rel_ganho =
+
+    0.4822
+
+dif_fase =
+
+    0.1000
+
+freqGsv =
+
+   0.4800 + 0.0400i
+
+mag =
+
+    0.4817
+
+fase =
+
+    0.0831
+
+</pre><img vspace="5" hspace="5" src="task_7_01.png" width="70%"alt="">
+        <h2>2. Sistema de 2&ordf; ordem sem amortecimento<a name="3"></a></h2>
+        <div>
+            <ul>
+                <li>determinar wn</li>
+                <li>obter a resposta a entrada senoidal em wn</li>
+                <li>aplicar a fun&ccedil;&atilde;o freqresp para wn</li>
+            </ul>
+        </div><pre class="codeinput">Gmm = 1/(s^2+5)
+wn = sqrt(5)
+t = 0:0.1:20;
+u=sin(wn*t);
+[y, t] = lsim(Gmm, u, t, 0);
+figure(2)
+h = plot(t, u, t, y);
+title(<span class="string">'resposta do sistema G_2(s) a entrada senoidal com wn = 2.2361 rad/s'</span>)
+xlabel(<span class="string">'tempo (s)'</span>)
+ylabel(<span class="string">'amplitude (v)'</span>)
+grid <span class="string">on</span>;
+legend(<span class="string">'sinal de entrada'</span>, <span class="string">'sinal de sa&iacute;da'</span>);
+text(2,3.5,<span class="string">'$G_2(s) = \frac{1}{s^{2} + 5}$'</span>,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'FontSize'</span>,18)
+freqGmm = freqresp(Gmm, wn)
+</pre><pre class="codeoutput">
+Gmm =
+
+     1
+  -------
+  s^2 + 5
+
+Continuous-time transfer function.
+
+wn =
+
+    2.2361
+
+freqGmm =
+
+   Inf
+
+</pre><img vspace="5" hspace="5" src="task_7_02.png" width="70%"alt="">
+        <h2>3. Resposta a entrada senoidal em diferentes frequ&ecirc;ncias<a name="4"></a></h2>
+        <div>
+            <ul>
+                <li>obter a respota a entrada senoidal em diferentes frequ&ecirc;ncias</li>
+                <li>para Gmm, obter as respostas para: w=wn/2, w=wn, w=2wn, w=10wn</li>
+                <li>para o vetor w = [ 0.1*wn, 0.25*wn, 0.5*wn, 2*wn, 4*wn, 10*wn ]</li>
+                <li>obter a resposta a fun&ccedil;&atilde;o freqresp para Gmm dado um vetor de wn's</li>
+                <li>obter o vetor de magnitudes da fun&ccedil;&atilde;o freqresp</li>
+                <li>plotar o vetor de magnitudes da fun&ccedil;&atilde;o freqresp</li>
+            </ul>
+        </div><pre class="codeinput">Gmm = 1/(s^2+5);
+wn = sqrt(5);
+vector_wn = [wn/2 2*wn 10*wn];
+vector_wn_txt = {<span class="string">'wn/2'</span> <span class="string">'2*wn'</span> <span class="string">'10*wn'</span>};
+figure(3)
+t = 0:0.01:5;
+<span class="keyword">for</span> i = 1:3
+    subplot(3,1,i);
+    u=sin(vector_wn(i)*t);
     [y, t] = lsim(Gmm, u, t, 0);
-    figure(2)
-    h = plot(t, u, t, y);
-    title('resposta do sistema G_2(s) a entrada senoidal com wn = 2.2361 rad/s')
+    plot(t, u, t, y);
+    hold <span class="string">on</span>
+    txt1 = <span class="string">'resposta do sistema G_2(s) a entrada senoidal com..'</span>;
+    txt2 = strcat( txt1, vector_wn_txt(i));
+    txt3 = strcat( txt2, <span class="string">', w =..'</span>);
+    txt4 = strcat( txt3, num2str(vector_wn(i)) );
+    txt5 = strcat( txt4, <span class="string">' rad/s'</span> );
+    title(txt5)
+    xlabel(<span class="string">'tempo (s)'</span>)
+    ylabel(<span class="string">'amplitude (v)'</span>)
+    legend(<span class="string">'sinal de entrada'</span>, <span class="string">'sinal de sa&iacute;da'</span>);
+    grid <span class="string">on</span>;
+<span class="keyword">end</span>
+
+w = [0.1*wn 0.25*wn 0.5*wn wn*0.75 wn wn*1.25 2*wn 4*wn 10*wn];
+freqGmm = freqresp(Gmm, w);
+magGmm = abs(squeeze(freqGmm));
+figure(4)
+plot(w, magGmm, <span class="string">'.-'</span>);
+grid <span class="string">on</span>;
+xlabel(<span class="string">'frequ&ecirc;ncia (rad/s)'</span>)
+ylabel(<span class="string">'amplitude (v)'</span>)
+title(<span class="string">'amplitude em fun&ccedil;&atilde;o das frequ&ecirc;ncias do sistema G_2(s)'</span>);
+text(10,.25,<span class="string">'$G_2(s) = \frac{1}{s^{2} + 5}$'</span>,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'FontSize'</span>,18)
+</pre><img vspace="5" hspace="5" src="task_7_03.png" width="70%"alt=""> <img vspace="5" hspace="5" src="task_7_04.png" width="70%"alt="">
+        <h2>4. Diagrama de Bode<a name="5"></a></h2>
+        <div>
+            <ul>
+                <li>plotar o diagrama de Bode do sistema Gmm</li>
+                <li>obter o n&iacute;vel dc do sistema Gmm</li>
+                <li>obter a primeira frequ&ecirc;ncia em 3db</li>
+            </ul>
+        </div><pre class="codeinput">figure(5)
+Gmm = 1/(s^2+5);
+bode(Gmm)
+grid <span class="string">on</span>;
+nivel_dc = dcgain(Gmm)
+first_3db = bandwidth(Gmm)
+title(<span class="string">'diagrama de Bode do sistema G_2(s)'</span>);
+text(0.2, 140,<span class="string">'$G_2(s) = \frac{1}{s^{2} + 5}$'</span>,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'FontSize'</span>,18)
+</pre><pre class="codeoutput">
+nivel_dc =
+
+    0.2000
+
+first_3db =
+
+    3.4731
+
+</pre><img vspace="5" hspace="5" src="task_7_05.png" width="70%"alt="">
+        <h2>5. An&aacute;lise em fun&ccedil;&atilde;o da vari&ccedil;&atilde;o de par&acirc;metros<a name="6"></a></h2>
+        <div>
+            <ul>
+                <li>observar a resposta em frequ&ecirc;ncia para diferntes amortecimentos</li>
+                <li>obter as curvas de magnitude e fase diferentes parametros</li>
+            </ul>
+        </div><pre class="codeinput">m = 1;
+k = 5;
+b = [0.1 0.5 0.8 1 2 4];
+figure(6)
+<span class="keyword">for</span> i = 1:6
+    G3 = 1 / (m*s^2 + b(i)*s + k);
+    bodeplot(G3)
+    hold <span class="string">on</span>
+<span class="keyword">end</span>
+grid <span class="string">on</span>;
+b_leg = {<span class="string">'b=0.1'</span> <span class="string">'b=0.5'</span> <span class="string">'b=0.8'</span> <span class="string">'b=1'</span> <span class="string">'b=2'</span> <span class="string">'b=4'</span>};
+legend(b_leg);
+text(0.03, -90,<span class="string">'$G_3(s) = \frac{1}{s^{2} + b.s + 5}$'</span>,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'FontSize'</span>,18)
+title(<span class="string">'diagrama de Bode do sistema G_3(s) variando b'</span>);
+
+b = 0.6;
+k = 5;
+m = [2 3 4 6];
+figure(7)
+<span class="keyword">for</span> i = 1:4
+    G4 = 1 / (m(i)*s^2 + b*s + k);
+    bodeplot(G4)
+    hold <span class="string">on</span>
+<span class="keyword">end</span>
+grid <span class="string">on</span>;
+m_leg = {<span class="string">'m=2'</span> <span class="string">'m=3'</span> <span class="string">'m=4'</span> <span class="string">'m=6'</span>};
+legend(m_leg);
+text(0.15, -90,<span class="string">'$G_4(s) = \frac{1}{m.s^{2} + 0.6.s + 5}$'</span>,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'FontSize'</span>,18)
+title(<span class="string">'diagrama de Bode do sistema G_4(s) variando m'</span>);
+</pre><img vspace="5" hspace="5" src="task_7_06.png" width="70%"alt=""> <img vspace="5" hspace="5" src="task_7_07.png" width="70%"alt="">
+        <p class="footer">
+            <br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a>
+            <br>
+        </p>
+    </div>
+    <!--
+##### SOURCE BEGIN #####
+%% Sobre
+% * Autor: Jonas Vieira de Souza
+% * Data: 01/11/2018
+% * Objetivo: analisar respostas em frequência através do diagrama de Bode
+
+%% Configurações iniciais
+% * desabilitar mensagens 'warning'
+% * limpar figuras, variáveis e console
+warning('off');
+close all;
+clear;
+clc;
+
+%% 1. Resposta a entrada senoidal
+% * resposta do sistema a entrada senoidal
+% * determinar ganho e fase
+% * obter a resposta em frequência através da função freqresp
+% * determinar a magnitude e fase através da função freqresp
+m = 500;
+b = 1000;
+k = 15000;
+s = tf('s');
+Gsv = (m*s + b) / (m*s^2 + b*s + k)
+t = 0:0.02:10;
+w = 5;
+u=sin(w*t);
+x0 = 0;
+figure(1)
+[y, t] = lsim(Gsv, u, t, 0);
+h = plot(t, u, t, y);
+title('resposta do sistema G_1(s) a entrada senoidal com w = 5 rad/s')
+xlabel('tempo (s)')
+ylabel('amplitude (v)')
+grid on;
+legend('sinal de entrada', 'sinal de saída');
+text(1,.7,'$G_1(s) = \frac{500s + 1000}{500s^{2} + 1000s + 25000}$','interpreter','latex','FontSize',18)
+
+[u_value, u_idx] = max(u);
+u_value;
+u_t = t(u_idx);
+[y_value, y_idx] = max(y);
+y_value;
+y_t = t(y_idx);
+rel_ganho = y_value / u_value
+Dt = u_t - y_t;
+dif_fase = w*Dt
+
+freqGsv = freqresp(Gsv, 5)
+
+mag = abs(freqGsv)
+fase = angle(freqGsv)
+
+%% 2. Sistema de 2ª ordem sem amortecimento
+% * determinar wn
+% * obter a resposta a entrada senoidal em wn
+% * aplicar a função freqresp para wn
+Gmm = 1/(s^2+5)
+wn = sqrt(5)
+t = 0:0.1:20;
+u=sin(wn*t);
+[y, t] = lsim(Gmm, u, t, 0);
+figure(2)
+h = plot(t, u, t, y);
+title('resposta do sistema G_2(s) a entrada senoidal com wn = 2.2361 rad/s')
+xlabel('tempo (s)')
+ylabel('amplitude (v)')
+grid on;
+legend('sinal de entrada', 'sinal de saída');
+text(2,3.5,'$G_2(s) = \frac{1}{s^{2} + 5}$','interpreter','latex','FontSize',18)
+freqGmm = freqresp(Gmm, wn)
+
+%% 3. Resposta a entrada senoidal em diferentes frequências
+% * obter a respota a entrada senoidal em diferentes frequências
+% * para Gmm, obter as respostas para: w=wn/2, w=wn, w=2wn, w=10wn
+% * para o vetor w = [ 0.1*wn, 0.25*wn, 0.5*wn, 2*wn, 4*wn, 10*wn ]
+% * obter a resposta a função freqresp para Gmm dado um vetor de wn's
+% * obter o vetor de magnitudes da função freqresp
+% * plotar o vetor de magnitudes da função freqresp
+Gmm = 1/(s^2+5);
+wn = sqrt(5);
+vector_wn = [wn/2 2*wn 10*wn];
+vector_wn_txt = {'wn/2' '2*wn' '10*wn'};
+figure(3)
+t = 0:0.01:5;
+for i = 1:3
+    subplot(3,1,i);
+    u=sin(vector_wn(i)*t);
+    [y, t] = lsim(Gmm, u, t, 0);
+    plot(t, u, t, y);
+    hold on
+    txt1 = 'resposta do sistema G_2(s) a entrada senoidal com..';
+    txt2 = strcat( txt1, vector_wn_txt(i));
+    txt3 = strcat( txt2, ', w =..');
+    txt4 = strcat( txt3, num2str(vector_wn(i)) );
+    txt5 = strcat( txt4, ' rad/s' );
+    title(txt5)
     xlabel('tempo (s)')
     ylabel('amplitude (v)')
-    grid on;
     legend('sinal de entrada', 'sinal de saída');
-    text(2,3.5,'$G_2(s) = \frac{1}{s^{2} + 5}$','interpreter','latex','FontSize',18)
-    freqGmm = freqresp(Gmm, wn)
+    grid on;
+end 
 
-    %% 3. Resposta a entrada senoidal em diferentes frequências
-    % * obter a respota a entrada senoidal em diferentes frequências
-    % * para Gmm, obter as respostas para: w=wn/2, w=wn, w=2wn, w=10wn
-    % * para o vetor w = [ 0.1*wn, 0.25*wn, 0.5*wn, 2*wn, 4*wn, 10*wn ]
-    % * obter a resposta a função freqresp para Gmm dado um vetor de wn's
-    % * obter o vetor de magnitudes da função freqresp
-    % * plotar o vetor de magnitudes da função freqresp
-    Gmm = 1/(s^2+5);
-    wn = sqrt(5);
-    vector_wn = [wn/2 2*wn 10*wn];
-    vector_wn_txt = {'wn/2' '2*wn' '10*wn'};
-    figure(3)
-    t = 0:0.01:5;
-    for i = 1:3
-        subplot(3,1,i);
-        u=sin(vector_wn(i)*t);
-        [y, t] = lsim(Gmm, u, t, 0);
-        plot(t, u, t, y);
-        hold on
-        txt1 = 'resposta do sistema G_2(s) a entrada senoidal com..';
-        txt2 = strcat( txt1, vector_wn_txt(i));
-        txt3 = strcat( txt2, ', w =..');
-        txt4 = strcat( txt3, num2str(vector_wn(i)) );
-        txt5 = strcat( txt4, ' rad/s' );
-        title(txt5)
-        xlabel('tempo (s)')
-        ylabel('amplitude (v)')
-        legend('sinal de entrada', 'sinal de saída');
-        grid on;
-    end 
+w = [0.1*wn 0.25*wn 0.5*wn wn*0.75 wn wn*1.25 2*wn 4*wn 10*wn];
+freqGmm = freqresp(Gmm, w);
+magGmm = abs(squeeze(freqGmm));
+figure(4)
+plot(w, magGmm, '.-');
+grid on;
+xlabel('frequência (rad/s)')
+ylabel('amplitude (v)')
+title('amplitude em função das frequências do sistema G_2(s)');
+text(10,.25,'$G_2(s) = \frac{1}{s^{2} + 5}$','interpreter','latex','FontSize',18)
+%% 4. Diagrama de Bode
+% * plotar o diagrama de Bode do sistema Gmm
+% * obter o nível dc do sistema Gmm
+% * obter a primeira frequência em 3db
+figure(5)
+Gmm = 1/(s^2+5);
+bode(Gmm)
+grid on;
+nivel_dc = dcgain(Gmm)
+first_3db = bandwidth(Gmm)
+title('diagrama de Bode do sistema G_2(s)');
+text(0.2, 140,'$G_2(s) = \frac{1}{s^{2} + 5}$','interpreter','latex','FontSize',18)
+%% 5. Análise em função da varição de parâmetros
+% * observar a resposta em frequência para diferntes amortecimentos
+% * obter as curvas de magnitude e fase diferentes parametros
+m = 1;
+k = 5;
+b = [0.1 0.5 0.8 1 2 4];
+figure(6)
+for i = 1:6
+    G3 = 1 / (m*s^2 + b(i)*s + k);
+    bodeplot(G3)
+    hold on
+end 
+grid on;
+b_leg = {'b=0.1' 'b=0.5' 'b=0.8' 'b=1' 'b=2' 'b=4'};
+legend(b_leg);
+text(0.03, -90,'$G_3(s) = \frac{1}{s^{2} + b.s + 5}$','interpreter','latex','FontSize',18)
+title('diagrama de Bode do sistema G_3(s) variando b');
 
-    w = [0.1*wn 0.25*wn 0.5*wn wn*0.75 wn wn*1.25 2*wn 4*wn 10*wn];
-    freqGmm = freqresp(Gmm, w);
-    magGmm = abs(squeeze(freqGmm));
-    figure(4)
-    plot(w, magGmm, '.-');
-    grid on;
-    xlabel('frequência (hz)')
-    ylabel('amplitude (v)')
-    title('amplitude em função das frequências do sistema de G_2(s)');
-    text(10,.25,'$G_2(s) = \frac{1}{s^{2} + 5}$','interpreter','latex','FontSize',18)
-    %% 4. Diagramde Bode
-    % * plotar o digrama de Bode do sistema Gmm
-    % * obter o nível dc do sistema Gmm
-    % * obter a primeira frequência em 3db
-    figure(5)
-    Gmm = 1/(s^2+5);
-    bode(Gmm)
-    grid on;
-    nivel_dc = dcgain(Gmm)
-    first_3db = bandwidth(Gmm)
-    title('diagram de Bode do sistema de G_2(s)');
-    text(0.2, 140,'$G_2(s) = \frac{1}{s^{2} + 5}$','interpreter','latex','FontSize',18)
-    %% 5. Análise em função da varição de parâmetros
-    % * observar a resposta em frequência para diferntes amortecimentos
-    % * obter as curvas de magnitude e fase diferentes parametros
-    m = 1;
-    k = 5;
-    b = [0.1 0.5 0.8 1 2 4];
-    figure(6)
-    for i = 1:6
-        G3 = 1 / (m*s^2 + b(i)*s + k);
-        bodeplot(G3)
-        hold on
-    end 
-    grid on;
-    b_leg = {'b=0.1' 'b=0.5' 'b=0.8' 'b=1' 'b=2' 'b=4'};
-    legend(b_leg);
-    text(0.03, -90,'$G_3(s) = \frac{1}{s^{2} + b.s + 5}$','interpreter','latex','FontSize',18)
-    title('diagrama de Bode do sistema G_3 variando b');
-
-    b = 0.6;
-    k = 5;
-    m = [2 3 4 6];
-    figure(7)
-    for i = 1:4
-        G4 = 1 / (m(i)*s^2 + b*s + k);
-        bodeplot(G4)
-        hold on
-    end 
-    grid on;
-    m_leg = {'m=2' 'm=3' 'm=4' 'm=6'};
-    legend(m_leg);
-    text(0.15, -90,'$G_4(s) = \frac{1}{m.s^{2} + 0.6.s + 5}$','interpreter','latex','FontSize',18)
-    title('diagrama de Bode do sistema G_4 variando m');
-    ##### SOURCE END #####
-    -->
-    </body>
+b = 0.6;
+k = 5;
+m = [2 3 4 6];
+figure(7)
+for i = 1:4
+    G4 = 1 / (m(i)*s^2 + b*s + k);
+    bodeplot(G4)
+    hold on
+end 
+grid on;
+m_leg = {'m=2' 'm=3' 'm=4' 'm=6'};
+legend(m_leg);
+text(0.15, -90,'$G_4(s) = \frac{1}{m.s^{2} + 0.6.s + 5}$','interpreter','latex','FontSize',18)
+title('diagrama de Bode do sistema G_4(s) variando m');
+##### SOURCE END #####
+-->
+</body>
 
 </html>
