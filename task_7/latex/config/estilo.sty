@@ -1,0 +1,53 @@
+\ProvidesPackage{estilo}
+
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    left=2cm,
+    top=2cm,
+    right=2cm,
+    bottom=2cm
+}
+
+% Packets basic
+% \usepackage{lmodern}		% Usa a fonte Latin Modern
+\usepackage{pslatex}		% Usa a fonte Times New Roman
+\usepackage[T1]{fontenc}	% Selecao de codigos de fonte.
+\usepackage[utf8]{inputenc} % Codificacao do documento
+\usepackage{indentfirst}	% Indenta o primeiro parágrafo de 
+\usepackage{color}			% Controle das cores
+\usepackage{graphicx}		% Inclusão de gráficos
+\usepackage{microtype} 		% para melhorias de justificação
+\usepackage{multicol, blindtext}
+\usepackage{multirow}
+\usepackage{placeins}	% permite usar 
+\usepackage{wrapfig} % Permite textos em volta de figuras
+\usepackage{pdfpages} % Permite usar o \includepdf
+\usepackage[brazilian,hyperpageref]{backref}	 % Paginas com 
+\usepackage[alf]{abntex2cite}	% Citações padrão ABNT
+\usepackage{listingsutf8}
+\renewcommand{\backrefpagesname}{Citado na(s) página(s):~}
+\renewcommand{\backref}{}
+\definecolor{blue}{RGB}{41,5,195}
+
+% information of PDF
+\makeatletter
+\hypersetup{
+	%pagebackref=true,
+	pdftitle={\@title}, 
+	pdfauthor={\@author},
+	pdfsubject={\imprimirpreambulo},
+	pdfcreator={LaTeX with abnTeX2},
+	pdfkeywords={relatório técnico}, 
+	colorlinks=false,    % false: boxed links; true: colored links
+	linkcolor=blue,     % color of internal links
+	citecolor=blue,     % color of links to bibliography
+	filecolor=magenta,  % color of file links
+	urlcolor=blue%,
+	%bookmarksdepth=4
+}
+\makeatother
+
+\setlength{\parindent}{1.3cm}
+\setlength{\parskip}{0.2cm}  % tente também \onelineskip
+\setlength{\columnsep}{20pt}
